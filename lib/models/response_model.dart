@@ -40,7 +40,7 @@ class ResponsesModel extends Model{
   }
 
   Response sendResponse([Map<String, dynamic> ressBody]){
-    dynamic _responseBody = ressBody != null ? ressBody : responseBody;
+    final _responseBody = ressBody != null ? ressBody : responseBody;
     switch (status) {
       case ResponsesStatus.success:
         return Response.ok(_responseBody);
