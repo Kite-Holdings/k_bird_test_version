@@ -9,6 +9,7 @@ class RequestsModel extends Model{
     this.requestType,
     this.account,
     this.metadata,
+    this.requestMethod = RequestMethod.getmethod
   }):super(dbUrl: databaseUrl, collectionName: requestsCollection){
     super.document = asMap();
   }
@@ -18,6 +19,7 @@ class RequestsModel extends Model{
   final RequestType requestType;
   final String account;
   final dynamic metadata;
+  final RequestMethod requestMethod;
 
 
 
@@ -26,6 +28,7 @@ class RequestsModel extends Model{
       "_id": id,
       "url": url,
       "requestType": _stringRequestType(),
+      "requestMethod": _stringRequestMethod(),
       "account": account,
       "metadata": metadata,
     };
@@ -35,7 +38,8 @@ class RequestsModel extends Model{
     return RequestsModel(
       url: object['url'].toString(),
       account: object['account'].toString(),
-      requestType: _toRequestType(object['metadata'].toString()),
+      requestType: _toRequestType(object['requestType'].toString()),
+      requestMethod: _toRequestMethod(object['requestMethod'].toString()),
       metadata: object['metadata'],
     );
   }
@@ -44,6 +48,9 @@ class RequestsModel extends Model{
     switch (requestType) {
       case RequestType.card:
         return 'card';
+        break;
+      case RequestType.cooperate:
+        return 'cooperate';
         break;
       case RequestType.mpesaStkPush:
         return 'mpesaStkPush';
@@ -64,6 +71,9 @@ class RequestsModel extends Model{
       case 'card':
         return RequestType.card;
         break;
+      case 'cooperate':
+        return RequestType.cooperate;
+        break;
       case 'mpesaStkPush':
         return RequestType.mpesaStkPush;
         break;
@@ -77,12 +87,60 @@ class RequestsModel extends Model{
         return RequestType.notDefined;
     }
   }
+
+  String _stringRequestMethod(){
+    switch (requestMethod) {
+      case RequestMethod.getmethod:
+        return 'GET';
+        break;
+      case RequestMethod.postMethod:
+        return 'POST';
+        break;
+      case RequestMethod.putMethod:
+        return 'PUT';
+        break;
+      case RequestMethod.deleteMethod:
+        return 'DELETE';
+        break;
+      default:
+        return 'notDefined';
+    }
+  }
+
+  RequestMethod _toRequestMethod(String value){
+    switch (value) {
+      case 'DELETE':
+        return RequestMethod.deleteMethod;
+        break;
+      case 'GET':
+        return RequestMethod.getmethod;
+        break;
+      case 'POST':
+        return RequestMethod.postMethod;
+        break;
+      case 'PUT':
+        return RequestMethod.putMethod;
+        break;
+      default:
+        return RequestMethod.notDefined;
+    }
+  }
+
 }
 
 enum RequestType{
   card,
+  cooperate,
   mpesaStkPush,
   notDefined,
   token,
   baseUser
+}
+
+enum RequestMethod{
+  getmethod,
+  postMethod,
+  deleteMethod,
+  putMethod,
+  notDefined
 }

@@ -1,41 +1,46 @@
 import 'package:kite_bird/models/requests_model.dart';
 import 'package:pedantic/pedantic.dart';
 
-class BaseUserRequests {
-  BaseUserRequests({this.account, this.metadata, this.baseUserRequestsType});
+class CooperateRequest{
+  CooperateRequest({this.account, this.metadata, this.cooperateRequestsType});
+
   final String account;
   final dynamic metadata;
-  final BaseUserRequestsType baseUserRequestsType;
+  final CooperateRequestsType cooperateRequestsType;
 
   ObjectId id = ObjectId();
-  String _url = '/users';
+  String _url = '/cooperate';
   String requestId() => id.toJson();
   RequestMethod _requestMethod = RequestMethod.getmethod;
-  final RequestType _requestType = RequestType.baseUser;
+  final RequestType _requestType = RequestType.cooperate;
 
   void normalRequest()async{
-    switch (baseUserRequestsType) {
-      case BaseUserRequestsType.create:
+    switch (cooperateRequestsType) {
+      case CooperateRequestsType.create:
         _requestMethod = RequestMethod.postMethod;
         break;
-      case BaseUserRequestsType.delete:
+      case CooperateRequestsType.delete:
         _requestMethod = RequestMethod.deleteMethod;
-        _url = '/users/:userId';
+        _url = '/cooperate/:cooperateId';
         break;
-      case BaseUserRequestsType.getAll:
+      case CooperateRequestsType.getAll:
         _requestMethod = RequestMethod.getmethod;
         break;
-        case BaseUserRequestsType.getByEmail:
+        case CooperateRequestsType.getByName:
         _requestMethod = RequestMethod.getmethod;
-        _url = '/users/email/:email';
+        _url = '/cooperate/name/:cooperateName';
         break;
-      case BaseUserRequestsType.getByid:
+        case CooperateRequestsType.getByCooprateCode:
         _requestMethod = RequestMethod.getmethod;
-        _url = '/users/:userId';
+        _url = '/cooperate/code/:cooperateCode';
         break;
-       case BaseUserRequestsType.login:
+      case CooperateRequestsType.getByid:
         _requestMethod = RequestMethod.getmethod;
-        _url = '/users/login';
+        _url = '/cooperate/:cooperateId';
+        break;
+       case CooperateRequestsType.token:
+        _requestMethod = RequestMethod.getmethod;
+        _url = '/cooperate/token';
         break;
       default:
     }
@@ -51,12 +56,14 @@ class BaseUserRequests {
     unawaited(_requestsModel.save());
   }
 
+  // token
 }
-enum BaseUserRequestsType{
+enum CooperateRequestsType{
   create,
   getAll,
   getByid,
-  getByEmail,
+  getByName,
+  getByCooprateCode,
   delete,
-  login
+  token
 }

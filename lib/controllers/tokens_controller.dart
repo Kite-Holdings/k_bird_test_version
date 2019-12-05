@@ -1,10 +1,8 @@
 import 'package:kite_bird/kite_bird.dart';
-import 'package:kite_bird/models/cooprate_model.dart';
-import 'package:kite_bird/models/requests_model.dart';
-import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/token_model.dart';
 import 'package:kite_bird/models/user_models.dart';
-import 'package:pedantic/pedantic.dart';
+import 'package:kite_bird/requests_managers/base_user_resquests.dart';
+import 'package:kite_bird/requests_managers/cooperate_request.dart';
 
 class CooprateTokenController extends ResourceController{
   TokenModel tokenModel = TokenModel();
@@ -13,6 +11,17 @@ class CooprateTokenController extends ResourceController{
 
   @Operation.get()
   Future<Response> getCooprateToken()async{
+    // Save Request
+    final CooperateRequest _cooperateRequest = CooperateRequest(
+      account: request.authorization != null ? request.authorization.clientID : null,
+      cooperateRequestsType: CooperateRequestsType.token,
+      metadata: {
+        "cooprateId": request.authorization.clientID
+      }
+    );
+    _cooperateRequest.normalRequest();
+
+
     final String _collection = cooprateCollection;
     final String _ownerId = request.authorization.clientID;
     final TokenModel _tokenModel = TokenModel(
@@ -23,41 +32,7 @@ class CooprateTokenController extends ResourceController{
 
     final Map<String, dynamic> _dbRes = await _tokenModel.save();
 
-    final CooprateModel _cooprateModel = CooprateModel();
-    final Map<String, dynamic> _cooprateMap = await _cooprateModel.findById(request.authorization.clientID.toString());
-    final _cooprate = _cooprateMap['body'];
-
-     // Save Request 
-      final ObjectId _requestId = ObjectId();
-        final RequestsModel _requestsModel = RequestsModel(
-          id: _requestId,
-          url: '/cooprate/token',
-          requestType: RequestType.token,
-          account: _cooprate['consumerKey'].toString(),
-          metadata: {
-            'clientId': request.authorization.clientID,
-            'entity': 'user'
-          }
-        );
-
-        unawaited(_requestsModel.save());
-
     if(_dbRes['status'] == 0){
-      // Save Response
-        final ResponsesModel _responsesModel = ResponsesModel(
-          requestId: _requestId.toJson(),
-          responseType: ResposeType.token,
-          responseBody: {
-            "status": 0,
-            "body": {
-              "token": _tokenModel.token,
-              "validTill": _validTill,
-            }
-          },
-          status: ResponsesStatus.success
-        );
-        unawaited(_responsesModel.save());
-
         return Response.ok({
           "status": 0,
           "body": {
@@ -66,14 +41,6 @@ class CooprateTokenController extends ResourceController{
           }
         });
     } else {
-      // Save Response
-      final ResponsesModel _responsesModel = ResponsesModel(
-        requestId: _requestId.toJson(),
-        responseType: ResposeType.token,
-        responseBody: {"status": 1, "body": "an error occured."},
-        status: ResponsesStatus.failed
-      );
-      unawaited(_responsesModel.save());
       return Response.badRequest(body: {"status": 1, "body": "an error occured."});
     }
     
@@ -89,6 +56,18 @@ class BaseUserTokenController extends ResourceController{
 
   @Operation.get()
   Future<Response> getBaseUserToken()async{
+    // Save request 
+    final BaseUserRequests _baseUserRequests = BaseUserRequests(
+      account: request.authorization != null ? request.authorization.clientID : null,
+      baseUserRequestsType: BaseUserRequestsType.login,
+      metadata: {
+        "function": 'User login/ get token',
+        "userId": request.authorization.clientID
+      },
+    );
+    _baseUserRequests.normalRequest();
+    final String _requestId = _baseUserRequests.requestId();
+
     final String _collection = baseUserCollection;
     final String _ownerId = request.authorization.clientID;
     final TokenModel _tokenModel = TokenModel(
@@ -100,44 +79,8 @@ class BaseUserTokenController extends ResourceController{
     final Map<String, dynamic> _dbRes = await _tokenModel.save();
 
     final UserModel _userModel = UserModel();
-    final Map<String, dynamic> _userMap = await _userModel.findById(request.authorization.clientID.toString());
     
-    if(_userMap['status'] == 0){
-      final _user = _userMap['body'];
-    
-
-    // Save Request 
-      final ObjectId _requestId = ObjectId();
-        final RequestsModel _requestsModel = RequestsModel(
-          id: _requestId,
-          url: '/users/login',
-          requestType: RequestType.token,
-          account: _user['email'].toString(),
-          metadata: {
-            'clientId': request.authorization.clientID,
-            'entity': 'user'
-          }
-        );
-
-        unawaited(_requestsModel.save());
-
     if(_dbRes['status'] == 0){
-      
-        // Save Response
-        final ResponsesModel _responsesModel = ResponsesModel(
-          requestId: _requestId.toJson(),
-          responseType: ResposeType.token,
-          responseBody: {
-            "status": 0,
-            "body": {
-              "token": _tokenModel.token,
-              "validTill": _validTill,
-            }
-          },
-          status: ResponsesStatus.success
-        );
-        unawaited(_responsesModel.save());
-
 
         return Response.ok({
           "status": 0,
@@ -147,19 +90,7 @@ class BaseUserTokenController extends ResourceController{
           }
         });
     } else {
-      // Save Response
-      final ResponsesModel _responsesModel = ResponsesModel(
-        requestId: _requestId.toJson(),
-        responseType: ResposeType.token,
-        responseBody: {"status": 1, "body": "an error occured."},
-        status: ResponsesStatus.failed
-      );
-      unawaited(_responsesModel.save());
       return Response.badRequest(body: {"status": 1, "body": "an error occured."});
-    }
-
-    } else{
-      return Response.serverError(body: {"status": 1, "body": "an error occured."});
     }
     
   }

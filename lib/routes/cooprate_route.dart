@@ -6,18 +6,18 @@ import 'package:kite_bird/kite_bird.dart';
 
 Router cooprateRoute(Router router){
 
-  const String _rootPath = 'cooprate';
+  const String _rootPath = 'cooperate';
 
   router
-    .route("/$_rootPath/[:cooprateId]")
+    .route("/$_rootPath/[:cooperateId]")
     .link(() => Authorizer.bearer(BaseUserBearerAouthVerifier()))
     .link(() => CooprateController());
   router
-    .route("/$_rootPath/name/:cooprateName")
+    .route("/$_rootPath/name/:cooperateName")
     .link(() => Authorizer.bearer(BaseUserBearerAouthVerifier()))
     .link(() => CooprateFindByController());  
   router
-    .route("/$_rootPath/code/:cooprateCode")
+    .route("/$_rootPath/code/:cooperateCode")
     .link(() => Authorizer.bearer(BaseUserBearerAouthVerifier()))
     .link(() => CooprateFindByController());
   router
