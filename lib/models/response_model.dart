@@ -39,22 +39,23 @@ class ResponsesModel extends Model{
     );
   }
 
-  Response sendResponse(Map<String, dynamic> ressBody){
+  Response sendResponse([Map<String, dynamic> ressBody]){
+    dynamic _responseBody = ressBody != null ? ressBody : responseBody;
     switch (status) {
       case ResponsesStatus.success:
-        return Response.ok(ressBody);
+        return Response.ok(_responseBody);
         break;
       case ResponsesStatus.failed:
-        return Response.badRequest(body: ressBody);
+        return Response.badRequest(body: _responseBody);
         break;
       case ResponsesStatus.error:
-        return Response.serverError(body: ressBody);
+        return Response.serverError(body: _responseBody);
         break;
       case ResponsesStatus.warning:
-        return Response.badRequest(body: ressBody);
+        return Response.badRequest(body: _responseBody);
         break;
       default:
-        return Response.serverError(body: ressBody);
+        return Response.serverError(body: _responseBody);
     }
   }
 
