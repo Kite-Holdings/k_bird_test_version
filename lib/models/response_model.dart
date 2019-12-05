@@ -1,3 +1,4 @@
+import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/model.dart';
 export 'package:kite_bird/models/model.dart' show ObjectId;
 
@@ -38,6 +39,25 @@ class ResponsesModel extends Model{
     );
   }
 
+  Response sendResponse(Map<String, dynamic> ressBody){
+    switch (status) {
+      case ResponsesStatus.success:
+        return Response.ok(ressBody);
+        break;
+      case ResponsesStatus.failed:
+        return Response.badRequest(body: ressBody);
+        break;
+      case ResponsesStatus.error:
+        return Response.serverError(body: ressBody);
+        break;
+      case ResponsesStatus.warning:
+        return Response.badRequest(body: ressBody);
+        break;
+      default:
+        return Response.serverError(body: ressBody);
+    }
+  }
+
 
   ResponsesStatusModel _stringResponsesModelStatus(){
     switch (status) {
@@ -53,8 +73,11 @@ class ResponsesModel extends Model{
       case ResponsesStatus.failed: 
         return ResponsesStatusModel(code: 101, message: 'failed');
         break;
+      case ResponsesStatus.error: 
+        return ResponsesStatusModel(code: 102, message: 'error');
+        break;
       default:
-        return ResponsesStatusModel(code: 102, message: 'notDefined');
+        return ResponsesStatusModel(code: 999, message: 'notDefined');
     }
   }
 
@@ -67,6 +90,8 @@ class ResponsesModel extends Model{
     {return ResponsesStatus.warning;}
     else if(int.parse(value['statusCode'].toString())== 101)
     {return ResponsesStatus.failed;}
+    else if(int.parse(value['statusCode'].toString())== 102)
+    {return ResponsesStatus.error;}
     else 
     {return ResponsesStatus.notDefined;}
   }
@@ -79,6 +104,12 @@ class ResponsesModel extends Model{
         break;
       case ResposeType.card:
         return 'card';
+        break;
+      case ResposeType.cooperate:
+        return 'cooperate';
+        break;
+      case ResposeType.baseUser:
+        return 'baseUser';
         break;
       case ResposeType.mpesaStkPush:
         return 'mpesaStkPush';
@@ -101,6 +132,12 @@ class ResponsesModel extends Model{
         break;
       case 'callBack':
         return ResposeType.callBack;
+        break;
+      case 'cooperate':
+        return ResposeType.cooperate;
+        break;
+      case 'baseUser':
+        return ResposeType.baseUser;
         break;
       case 'mpesaStkPush':
         return ResposeType.mpesaStkPush;
@@ -125,6 +162,8 @@ class ResponsesStatusModel{
 
 enum ResposeType{
   callBack,
+  cooperate,
+  baseUser,
   card,
   mpesaStkPush,
   stkQuery,
@@ -134,6 +173,7 @@ enum ResposeType{
 
 enum ResponsesStatus{
   success,
+  error,
   information,
   warning,
   failed,
