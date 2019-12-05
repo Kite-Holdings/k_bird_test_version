@@ -22,10 +22,10 @@ class RequestsModel extends Model{
 
 
   Map<String, dynamic> asMap(){
-    return{
+    return {
       "_id": id,
       "url": url,
-      "requestType": _stringRequestType,
+      "requestType": _stringRequestType(),
       "account": account,
       "metadata": metadata,
     };

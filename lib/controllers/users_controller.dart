@@ -2,46 +2,65 @@ import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/requests_model.dart';
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/user_models.dart';
+import 'package:kite_bird/requests_managers/base_user_resquests.dart';
 import 'package:kite_bird/serializers/users_serializer.dart';
+import 'package:pedantic/pedantic.dart';
 
 class UserController extends ResourceController{
   UserModel userModel = UserModel();
   @Operation.get()
   Future<Response> getAll()async{
-    return Response.ok(await userModel.find(where.excludeFields(['password'])));
+    try{
+      final Map<String, dynamic> _dbRes = await userModel.find(where.excludeFields(['password']));
+      final dynamic _respBody = _dbRes['status'] == 0 ? _dbRes['body'].length : _dbRes['body'];
+      final BaseUserRequests _baseUserRequests = BaseUserRequests(
+        account: request.authorization != null ? request.authorization.clientID : null,
+        metadata: {
+          "function": 'Get all users'
+        },
+      );
+      _baseUserRequests.normalRequest();
+      final String _requestId = _baseUserRequests.requestId();
+
+      if(_dbRes['status'] == 0){
+        return Response.ok(_dbRes);
+      } else {
+        return Response.badRequest(body: {
+          "status": 1,
+          "body": 'An error occured!'
+        });
+      }
+    }catch(e){
+      return Response.badRequest(body: {
+        "status": 1,
+        "body": 'An error occured!'
+      });
+    }
     }
 
   @Operation.get('userId')
   Future<Response> getOne(@Bind.path("userId") String userId)async{
+    try{
       final Map<String, dynamic> _dbRes = await userModel.findById(userId, ['password']);
+      final BaseUserRequests _baseUserRequests = BaseUserRequests(
+        account: request.authorization != null ? request.authorization.clientID : null,
+        metadata: {
+          "function": 'Get one users',
+          "userId": userId
+        },
+      );
+      _baseUserRequests.normalRequest();
+      final String _requestId = _baseUserRequests.requestId();
+
       if(_dbRes['status'] == 0){
-        // Save request and response
-        final ObjectId _requestId = ObjectId();
-        final RequestsModel _requestsModel = RequestsModel(
-          id: _requestId,
-          url: '/cooprate/token',
-          requestType: RequestType.token,
-          account: _aouthDetails[0],
-          metadata: {
-            'clientId': _id,
-            'entity': 'user'
-          }
-        );
-
-        unawaited(_requestsModel.save());
-
-        final ResponsesModel _responsesModel = ResponsesModel(
-          requestId: _requestId.toJson(),
-          responseType: ResposeType.token,
-          responseBody: {"message": "Wrong Consumer Key"},
-          status: ResponsesStatus.failed
-        );
-        unawaited(_responsesModel.save());
-
+        
         return Response.ok(_dbRes);
       } else {
         return Response.badRequest(body: {"status": 1, "body": "invalid id"});
       }
+    } catch (e){
+      return Response.badRequest(body: {"status": 1, "body": "invalid id"});
+    }
   }
 
   @Operation.post()

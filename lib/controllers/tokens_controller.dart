@@ -4,6 +4,7 @@ import 'package:kite_bird/models/requests_model.dart';
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/token_model.dart';
 import 'package:kite_bird/models/user_models.dart';
+import 'package:pedantic/pedantic.dart';
 
 class CooprateTokenController extends ResourceController{
   TokenModel tokenModel = TokenModel();
@@ -100,7 +101,10 @@ class BaseUserTokenController extends ResourceController{
 
     final UserModel _userModel = UserModel();
     final Map<String, dynamic> _userMap = await _userModel.findById(request.authorization.clientID.toString());
-    final _user = _userMap['body'];
+    
+    if(_userMap['status'] == 0){
+      final _user = _userMap['body'];
+    
 
     // Save Request 
       final ObjectId _requestId = ObjectId();
@@ -152,6 +156,10 @@ class BaseUserTokenController extends ResourceController{
       );
       unawaited(_responsesModel.save());
       return Response.badRequest(body: {"status": 1, "body": "an error occured."});
+    }
+
+    } else{
+      return Response.serverError(body: {"status": 1, "body": "an error occured."});
     }
     
   }

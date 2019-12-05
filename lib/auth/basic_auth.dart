@@ -3,6 +3,7 @@ import 'package:kite_bird/models/cooprate_model.dart';
 import 'package:kite_bird/models/requests_model.dart';
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/user_models.dart';
+import 'package:pedantic/pedantic.dart';
 
 class CooprateBasicAouthVerifier extends AuthValidator {
   @override

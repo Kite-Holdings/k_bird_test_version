@@ -99,7 +99,7 @@ class Model{
   }
 
   // find by id
-  Future<Map<String, dynamic>> findById(String id, [List<String> exclude]) async {
+  Future<Map<String, dynamic>> findById(String id, [List<String> exclude = const []]) async {
     await _db.open();
     try{
       final Map<String, dynamic> _res = await _dbCollection.findOne(where.id(ObjectId.parse(id)).excludeFields(exclude));

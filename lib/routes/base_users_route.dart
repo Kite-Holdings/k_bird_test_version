@@ -9,7 +9,7 @@ Router baseUserRoute(Router router){
 
   router
     .route('/$_rootPath/[:userId]')
-    .link(() => Authorizer.bearer(BaseUserBearerAouthVerifier()))
+    // .link(() => Authorizer.bearer(BaseUserBearerAouthVerifier()))
     .link(()=> UserController());
 
   router

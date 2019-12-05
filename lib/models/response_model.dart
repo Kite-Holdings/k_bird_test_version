@@ -12,10 +12,10 @@ class ResponsesModel extends Model{
     super.document = asMap();
   }
 
-  final String requestId;
-  final ResposeType responseType;
-  final ResponsesStatus status;
-  final dynamic responseBody;
+  String requestId;
+  ResposeType responseType;
+  ResponsesStatus status;
+  dynamic responseBody;
 
   Map<String, dynamic> asMap(){
     return{
