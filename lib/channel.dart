@@ -26,6 +26,9 @@ class KiteBirdChannel extends ApplicationChannel {
     // cooprate route
     cooprateRoute(router);
 
+    // Accounts
+    accountsRoute(router);
+
 
     return router;
   }

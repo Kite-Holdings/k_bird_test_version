@@ -2,7 +2,7 @@ import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/cooprate_model.dart';
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/requests_managers/cooperate_request.dart';
-import 'package:kite_bird/serializers/cooprate_serializer.dart';
+import 'package:kite_bird/serializers/cooprate/cooprate_serializer.dart';
 import 'package:pedantic/pedantic.dart';
 
 class CooprateController extends ResourceController{
