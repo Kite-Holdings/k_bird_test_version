@@ -7,19 +7,32 @@ import 'package:kite_bird/configs/twilio/twilio_config.dart';
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/accounts/register_account_verification_model.dart';
 import 'package:kite_bird/models/response_model.dart';
+import 'package:kite_bird/requests_managers/account_request.dart';
 import 'package:kite_bird/serializers/accounts/phoneno_verification_serializer.dart';
 import 'package:pedantic/pedantic.dart';
 
 class RegisterAccountVerificationController extends ResourceController{
-  // String _requestId;
-  // final ResposeType _responseType = ResposeType.baseUser;
+  String _requestId;
+  final ResposeType _responseType = ResposeType.baseUser;
   ResponsesStatus _responseStatus;
-  // dynamic _responseBodyModel;
+  dynamic _responseBodyModel;
   Map<String, dynamic> _responseBody;
 
   
   @Operation.post()
   Future<Response> confirmPhoneNo(@Bind.body(require: ['phoneNo']) PhoneNoVerificationSerializer phoneNoVerificationSerializer)async{
+    // Save Request
+    final AccountRequest _accountRequest = AccountRequest(
+      account: request.authorization != null ? request.authorization.clientID : null,
+      accountRequestsType: AccountRequestsType.verifyPhoneNo,
+      metadata: {
+        "phoneNo": phoneNoVerificationSerializer.phoneNo
+      }
+    );
+    _accountRequest.normalRequest();
+    _requestId = _accountRequest.requestId();
+
+
     final Random rng = Random();
     final int _otp = 1000 + rng.nextInt(1000);
     final List<String> _splited = phoneNoVerificationSerializer.phoneNo.split('7');
@@ -37,7 +50,6 @@ class RegisterAccountVerificationController extends ResourceController{
 
     // send otp
     final http.Response _otpRes = await sendOtp(_phoneNo, _otp.toString());
-    print(_otpRes.statusCode);
     if(_otpRes.statusCode != 201){
       _responseStatus = ResponsesStatus.failed;
       _responseBody = {"status": 1, "body": _otpRes.body};
@@ -47,8 +59,9 @@ class RegisterAccountVerificationController extends ResourceController{
     }
 
 
-    
-    final ResponsesModel _responsesModel = ResponsesModel(responseBody: _responseBody, status: _responseStatus);
+    // Save response
+    final ResponsesModel _responsesModel = ResponsesModel(responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody, status: _responseStatus, requestId: _requestId, responseType: _responseType);
+    unawaited(_responsesModel.save());
     return _responsesModel.sendResponse();
   }
 
@@ -83,10 +96,7 @@ class VerifyOtp extends ResourceController{
   Future<Response> verify()async{
     final RegisterAccountVerificationModel _registerAccountVerificationModel = RegisterAccountVerificationModel();
     final int _nowMili = (DateTime.now().millisecondsSinceEpoch/1000).floor();
-    print(_nowMili);
-    print(1575610283);
     final Map<String, dynamic> _dbRes = await _registerAccountVerificationModel.findBySelector(where.eq('phoneNo', '+254797162465').eq('otp', 1212).gte('expireTime', _nowMili));
-    print(_dbRes);
 
     _responseStatus = ResponsesStatus.success;
     _responseBody = {"body": "success"};

@@ -100,6 +100,9 @@ class ResponsesModel extends Model{
 
   String _stringReponseType(){
     switch (responseType) {
+      case ResposeType.account:
+        return 'account';
+        break;
       case ResposeType.callBack:
         return 'callBack';
         break;
@@ -130,6 +133,9 @@ class ResponsesModel extends Model{
     switch (value) {
       case 'card':
         return ResposeType.card;
+        break;
+      case 'account':
+        return ResposeType.account;
         break;
       case 'callBack':
         return ResposeType.callBack;
@@ -162,6 +168,7 @@ class ResponsesStatusModel{
 }
 
 enum ResposeType{
+  account,
   callBack,
   cooperate,
   baseUser,

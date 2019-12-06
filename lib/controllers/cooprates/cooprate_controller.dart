@@ -78,6 +78,7 @@ class CooprateController extends ResourceController{
       metadata: coopratesSerializer.asMap()
     );
     _cooperateRequest.normalRequest();
+    _requestId = _cooperateRequest.requestId();
 
 
     final CooprateModel _cooprateModel = CooprateModel(name: coopratesSerializer.name);

@@ -49,6 +49,9 @@ class RequestsModel extends Model{
       case RequestType.card:
         return 'card';
         break;
+      case RequestType.account:
+        return 'account';
+        break;
       case RequestType.cooperate:
         return 'cooperate';
         break;
@@ -70,6 +73,9 @@ class RequestsModel extends Model{
     switch (value) {
       case 'card':
         return RequestType.card;
+        break;
+      case 'account':
+        return RequestType.account;
         break;
       case 'cooperate':
         return RequestType.cooperate;
@@ -129,6 +135,7 @@ class RequestsModel extends Model{
 }
 
 enum RequestType{
+  account,
   card,
   cooperate,
   mpesaStkPush,
