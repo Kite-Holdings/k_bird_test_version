@@ -5,6 +5,10 @@ Router accountsRoute(Router router){
   router
     .route('/accounts/verifyNumber')
     .link(()=> RegisterAccountVerificationController());
+  
+  router
+    .route('/verifyOtp')
+    .link(()=> VerifyOtp());
 
   return router;
 }
