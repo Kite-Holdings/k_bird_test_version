@@ -84,24 +84,3 @@ class RegisterAccountVerificationController extends ResourceController{
   
   }
 }
-
-class VerifyOtp extends ResourceController{
-  // String _requestId;
-  // final ResposeType _responseType = ResposeType.baseUser;
-  ResponsesStatus _responseStatus;
-  // dynamic _responseBodyModel;
-  Map<String, dynamic> _responseBody;
-
-  @Operation.post()
-  Future<Response> verify()async{
-    final RegisterAccountVerificationModel _registerAccountVerificationModel = RegisterAccountVerificationModel();
-    final int _nowMili = (DateTime.now().millisecondsSinceEpoch/1000).floor();
-    final Map<String, dynamic> _dbRes = await _registerAccountVerificationModel.findBySelector(where.eq('phoneNo', '+254797162465').eq('otp', 1212).gte('expireTime', _nowMili));
-
-    _responseStatus = ResponsesStatus.success;
-    _responseBody = {"body": "success"};
-    final ResponsesModel _responsesModel = ResponsesModel(responseBody: _responseBody, status: _responseStatus);
-    return _responsesModel.sendResponse();
-
-  }
-}
