@@ -98,35 +98,30 @@ class UserController extends ResourceController{
     _requestId = _baseUserRequests.requestId();
 
 
-    // validate email
-    if(RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(usersSerializer.email)){
-      final UserModel _userModel = UserModel(
-        email: usersSerializer.email,
-        password: usersSerializer.password,
-        role: userModel.userRoleFromString(usersSerializer.role.toLowerCase())
-      );
-      try{
-        final Map<String, dynamic> _dbRes = await _userModel.save();
-        if(_dbRes['status'] == 0){
-          _responseStatus = ResponsesStatus.success;
-          _responseBody = {'status': 0, 'body': "User saved."};
+    final UserModel _userModel = UserModel(
+      email: usersSerializer.email,
+      password: usersSerializer.password,
+      role: userModel.userRoleFromString(usersSerializer.role.toLowerCase())
+    );
+    try{
+      final Map<String, dynamic> _dbRes = await _userModel.save();
+      if(_dbRes['status'] == 0){
+        _responseStatus = ResponsesStatus.success;
+        _responseBody = {'status': 0, 'body': "User saved."};
+      } else {
+        if(_dbRes['body']['code'] == 11000){
+          _responseStatus = ResponsesStatus.failed;
+          _responseBody = {'status': 1, 'body': "email exixts"};
         } else {
-          if(_dbRes['body']['code'] == 11000){
-            _responseStatus = ResponsesStatus.failed;
-            _responseBody = {'status': 1, 'body': "email exixts"};
-          } else {
-            _responseStatus = ResponsesStatus.error;
-            _responseBody = {'status': 1, 'body': 'An error occured!'};
-          }
+          _responseStatus = ResponsesStatus.error;
+          _responseBody = {'status': 1, 'body': 'An error occured!'};
         }
-      }catch (e){
-        _responseStatus = ResponsesStatus.error;
-        _responseBody =  {'status': 1, 'body': 'An error occured!'};
       }
-    } else{
-      _responseStatus = ResponsesStatus.warning;
-      _responseBody = {'status': 1, 'body': "invalid email"};
+    }catch (e){
+      _responseStatus = ResponsesStatus.error;
+      _responseBody =  {'status': 1, 'body': 'An error occured!'};
     }
+
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
     unawaited(_responsesModel.save());

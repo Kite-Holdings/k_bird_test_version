@@ -51,11 +51,11 @@ class RegisterAccountVerificationController extends ResourceController{
     // send otp
     final http.Response _otpRes = await sendOtp(_phoneNo, _otp.toString());
     if(_otpRes.statusCode != 201){
-      _responseStatus = ResponsesStatus.failed;
-      _responseBody = {"status": 1, "body": _otpRes.body};
+      _responseStatus = ResponsesStatus.error;
+      _responseBody = {"status": 1, "body": "an error occoured"};
     } else{
       _responseStatus = ResponsesStatus.success;
-      _responseBody = {"status": 1, "body": "Successful. Please wait for otp"};
+      _responseBody = {"status": 0, "body": "Successful. Please wait for otp"};
     }
 
 
