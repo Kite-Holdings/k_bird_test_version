@@ -1,4 +1,5 @@
 import 'package:kite_bird/kite_bird.dart';
+import 'package:kite_bird/models/accounts/account_model.dart';
 import 'package:kite_bird/models/accounts/register_account_verification_model.dart';
 import 'package:kite_bird/models/cooprate_model.dart';
 import 'package:kite_bird/models/response_model.dart';
@@ -93,7 +94,7 @@ class BaseUserBasicAouthVerifier extends AuthValidator {
       _authorization = null;
     } else {
       
-      final _account = _accounts['body'].first;
+      final _account = _accounts['body'].length !=0 ? _accounts['body'].first : null;
 
       if(_account == null) {
         _responseBody = {"status": 1, "body": "wrong Email"};
@@ -131,15 +132,19 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
   String _requestId;
   final ResposeType _responseType = ResposeType.account;
   ResponsesStatus _responseStatus;
-  // dynamic _responseBodyModel;
   Map<String, dynamic> _responseBody;
   @override
   FutureOr<Authorization> validate<T>(AuthorizationParser<T> parser, T authorizationData, {List<AuthScope> requiredScope}) async{
     Authorization _authorization;
     final List<String> _aouthDetails = authorizationData.toString().split(":");
     final int _nowMili = (DateTime.now().millisecondsSinceEpoch/1000).floor();
-    final Map<String, dynamic> _dbRes = await _registerAccountVerificationModel.findBySelector(where.eq('phoneNo', '+${_aouthDetails[0]}').eq('otp', int.parse(_aouthDetails[1])).gte('expireTime', _nowMili));
+    final Map<String, dynamic> _dbRes = await _registerAccountVerificationModel.findBySelector(
+      where.eq('phoneNo', _aouthDetails[0])
+        .eq('otp', int.parse(_aouthDetails[1]))
+        // .gte('expireTime', _nowMili)
+        );
     
+    // save request
     final AccountRequest _accountRequest = AccountRequest(
       account: _aouthDetails[0],
       accountRequestsType: AccountRequestsType.verifyOtp,
@@ -174,4 +179,62 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
     return _authorization;
   }
   
+}
+
+
+class AccountLoginAouthVerifier extends AuthValidator {
+  final AccountModel _accountModel = AccountModel();
+  String _requestId;
+  final ResposeType _responseType = ResposeType.account;
+  ResponsesStatus _responseStatus;
+  Map<String, dynamic> _responseBody;
+  @override
+  FutureOr<Authorization> validate<T>(AuthorizationParser<T> parser, T authorizationData, {List<AuthScope> requiredScope}) async {
+    Authorization _authorization;
+    final List<String> _aouthDetails = authorizationData.toString().split(":");
+    final Map<String, dynamic> _dbRes = await _accountModel.findBySelector(where.eq('phoneNo', _aouthDetails[0]));
+
+    // save request
+    final AccountRequest _accountRequest = AccountRequest(
+      account: _aouthDetails[0],
+      accountRequestsType: AccountRequestsType.verifyOtp,
+      metadata: _aouthDetails
+    );
+    _accountRequest.normalRequest();
+    _requestId = _accountRequest.requestId();
+
+    if(_dbRes['status'] != 0){
+      _responseBody = {"status": 1, "body": "internal error"};
+      _responseStatus = ResponsesStatus.error;
+      _authorization = null;
+    }else{
+      final item = _dbRes['body'].length !=0 ? _dbRes['body'].first : null;
+      if(item == null){
+        _responseBody = {"status": 1, "body": "user does not exist"};
+        _responseStatus = ResponsesStatus.failed;
+        _authorization = null;
+      }else{
+        if(_accountModel.verifyPassword(_aouthDetails[0], item['password'].toString())){
+          _authorization = Authorization(item['_id'].toString().split('\"')[1], 0, null);
+        } else {
+          _responseBody = {"status": 1, "body": "wrong credentials"};
+          _responseStatus = ResponsesStatus.failed;
+        }
+      }
+    }
+
+
+
+    final ResponsesModel _responsesModel = ResponsesModel(
+      requestId: _requestId,
+      responseType: _responseType,
+      responseBody: _responseBody,
+      status: _responseStatus
+    );
+    unawaited(_responsesModel.save());
+
+
+
+    return _authorization;
+  }
 }

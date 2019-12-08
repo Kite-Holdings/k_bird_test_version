@@ -188,7 +188,7 @@ class CooprateFindByController extends ResourceController{
         _responseStatus = ResponsesStatus.success;
         _responseBody = _dbRes;
       } else {
-        _responseStatus = ResponsesStatus.success;
+        _responseStatus = ResponsesStatus.failed;
         _responseBody = {"status": 1, "body": "invalid id"};
       }
     // Save response

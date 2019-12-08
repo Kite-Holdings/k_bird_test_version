@@ -121,18 +121,15 @@ class BaseUserTokenController extends ResourceController{
 }
 
 class AccoutRegisterTokenController extends ResourceController{
-  TokenModel tokenModel = TokenModel();
   static int duration = 300; // 300 seconds for 5 mins
   final int _validTill = (DateTime.now().millisecondsSinceEpoch/1000 + duration).floor();
-
   String _requestId;
   final ResposeType _responseType = ResposeType.account;
   ResponsesStatus _responseStatus;
-  dynamic _responseBodyModel;
   Map<String, dynamic> _responseBody;
 
   @Operation.get()
-  Future<Response> getBaseUserToken()async{
+  Future<Response> getOtpToken()async{
     // Save request 
     final AccountRequest _accountRequest = AccountRequest(
       account: request.authorization != null ? request.authorization.clientID : null,
@@ -169,7 +166,7 @@ class AccoutRegisterTokenController extends ResourceController{
       _responseBody = {"status": 1, "body": "an error occured."};
     }
     // Save response
-    final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
+    final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBody);
     unawaited(_responsesModel.save());
     return _responsesModel.sendResponse(_responseBody);
 

@@ -13,7 +13,7 @@ import 'package:pedantic/pedantic.dart';
 
 class RegisterAccountVerificationController extends ResourceController{
   String _requestId;
-  final ResposeType _responseType = ResposeType.baseUser;
+  final ResposeType _responseType = ResposeType.account;
   ResponsesStatus _responseStatus;
   dynamic _responseBodyModel;
   Map<String, dynamic> _responseBody;
@@ -38,7 +38,7 @@ class RegisterAccountVerificationController extends ResourceController{
     final List<String> _splited = phoneNoVerificationSerializer.phoneNo.split('7');
     String _phoneNo;
     final StringBuffer _stringBuffer = StringBuffer();
-    _stringBuffer.write('+254');
+    _stringBuffer.write('254');
     for(int i = 1; i < _splited.length; i++){
       _stringBuffer.write('${'7'}${_splited[i]}');
     }
@@ -49,8 +49,9 @@ class RegisterAccountVerificationController extends ResourceController{
     unawaited(_registerAccountVerificationModel.save());
 
     // send otp
-    final http.Response _otpRes = await sendOtp(_phoneNo, _otp.toString());
+    final http.Response _otpRes = await sendOtp('+$_phoneNo', _otp.toString());
     if(_otpRes.statusCode != 201){
+      print(_otpRes.body);
       _responseStatus = ResponsesStatus.error;
       _responseBody = {"status": 1, "body": "an error occoured"};
     } else{

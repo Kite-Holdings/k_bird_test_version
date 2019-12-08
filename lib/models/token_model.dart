@@ -3,7 +3,8 @@ import 'package:random_string/random_string.dart';
 export 'package:kite_bird/models/model.dart' 
         show where, modify, ObjectId, 
         tokensCollection, baseUserCollection, 
-        cooprateCollection, registerPhoneverifivationCollection;
+        cooprateCollection, registerPhoneverifivationCollection,
+        accountsCollection;
 
 class TokenModel extends Model{
   TokenModel({

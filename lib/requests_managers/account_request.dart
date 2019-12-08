@@ -17,8 +17,13 @@ class AccountRequest{
 
     void normalRequest()async{
     switch (accountRequestsType) {
-      case AccountRequestsType.register:
+      case AccountRequestsType.registerConsumer:
         _requestMethod = RequestMethod.postMethod;
+        _url = '/account/consumer';
+        break;
+      case AccountRequestsType.registerMerchant:
+        _requestMethod = RequestMethod.postMethod;
+        _url = '/account/merchant';
         break;
       case AccountRequestsType.delete:
         _requestMethod = RequestMethod.deleteMethod;
@@ -62,7 +67,8 @@ enum AccountRequestsType{
   getByid,
   getByPhoneNo,
   login,
-  register,
+  registerConsumer,
+  registerMerchant,
   verifyOtp,
   verifyPhoneNo,
 }
