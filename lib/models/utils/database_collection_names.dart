@@ -6,3 +6,4 @@ const String registerPhoneverifivationCollection = 'registerPhoneverifivation';
 const String requestsCollection = 'requests';
 const String responsesCollection = 'responses';
 const String tokensCollection = 'tokens';
+const String walletsCollection = 'wallets';

@@ -45,7 +45,11 @@ class RegisterAccountVerificationController extends ResourceController{
     _phoneNo = _stringBuffer.toString();
 
     // Save details
-    final RegisterAccountVerificationModel _registerAccountVerificationModel = RegisterAccountVerificationModel(phoneNo: _phoneNo, otp: _otp);
+    final RegisterAccountVerificationModel _registerAccountVerificationModel = RegisterAccountVerificationModel(
+      phoneNo: _phoneNo, 
+      otp: _otp,
+      cooprateId: request.authorization.clientID
+      );
     unawaited(_registerAccountVerificationModel.save());
 
     // send otp

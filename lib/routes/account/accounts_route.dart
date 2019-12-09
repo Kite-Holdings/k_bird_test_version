@@ -8,17 +8,18 @@ import 'package:kite_bird/kite_bird.dart';
 
 Router accountsRoute(Router router){
   router
-    .route('/account/login')
+    .route('/accounts/login')
     .link(()=> Authorizer.basic(AccountLoginAouthVerifier()))
     .link(()=> AccountLoginController());
 
   router
-    .route('/account/consumer')
+    .route('/accounts/consumer')
     .link(()=> Authorizer.bearer(RegisterAccountBearerAouthVerifier()))
     .link(()=> RegisterConsumerAccount());
     
   router
     .route('/accounts/verifyNumber')
+    .link(()=> Authorizer.bearer(CooprateBearerAouthVerifier()))
     .link(()=> RegisterAccountVerificationController());
   
   router
