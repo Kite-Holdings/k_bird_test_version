@@ -1,3 +1,4 @@
+// import 'package:kite_bird/models/utils/database_collection_names.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 export 'package:kite_bird/models/utils/settings.dart' show databaseUrl, databaseName;
 export 'package:kite_bird/models/utils/database_collection_names.dart';
@@ -128,7 +129,7 @@ class Model{
 
 
   // find and modify
-  Future<Map<String, dynamic>> findAndModify(SelectorBuilder selector, ModifierBuilder modifier) async {
+  Future<Map<String, dynamic>> findAndModify({SelectorBuilder selector, ModifierBuilder modifier}) async {
     await _db.open();
     try{
       final Map<String, dynamic> _res = await _dbCollection.findAndModify(query: selector, update: modifier, returnNew: true);
@@ -167,10 +168,11 @@ class Model{
   // void indexes()async{
   //   await _db.open();
   //   try{
-  //     await _db.ensureIndex('baseUserCollection', keys: {"email": 1}, unique: true, background: true, dropDups: false);
-  //     await _db.ensureIndex('cooprateCollection', keys: {"name": 1}, unique: true, background: true, dropDups: false);
-  //     await _db.ensureIndex('counterCollection', keys: {"label": 1}, unique: true, background: true, dropDups: false);
-  //     print(_db.state);
+  //     await _db.ensureIndex(accountsCollection, keys: {'phoneNo': 1}, unique: true, background: true, dropDups: false);
+  //     await _db.ensureIndex(baseUserCollection, keys: {'email': 1}, unique: true, background: true, dropDups: false);
+  //     await _db.ensureIndex(cooprateCollection, keys: {"name": 1}, unique: true, background: true, dropDups: false);
+  //     await _db.ensureIndex(counterCollection, keys: {"label": 1}, unique: true, background: true, dropDups: false);
+  //     await _db.ensureIndex(walletsCollection, keys: {"walletNo": 1}, unique: true, background: true, dropDups: false);
   //   } catch (e){
   //     print(e);
   //   }

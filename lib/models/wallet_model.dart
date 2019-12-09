@@ -1,5 +1,7 @@
 import 'package:kite_bird/models/model.dart';
 
+export 'package:kite_bird/models/model.dart' show modify, where;
+
 class WalletModel extends Model{
   WalletModel({
     this.ownerId,
@@ -18,9 +20,9 @@ class WalletModel extends Model{
   double balance = 0;
 
   Map<String, dynamic> asMap(){
-    final String _walletNo = cooprateCode + 
+    final String _walletNo = cooprateCode.toString() + 
     (walletType == WalletType.consumer ? '0' : '1') +
-    walletNo;
+    walletNo.toString();
 
     return {
       'balance': balance,
@@ -40,6 +42,7 @@ class WalletModel extends Model{
       walletType: _walletTypeFromString(object['walletType'].toString()),
     );
   }
+
 
   String _stringWalletType(){
     switch (walletType) {

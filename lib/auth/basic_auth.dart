@@ -141,7 +141,7 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
     final Map<String, dynamic> _dbRes = await _registerAccountVerificationModel.findBySelector(
       where.eq('phoneNo', _aouthDetails[0])
         .eq('otp', int.parse(_aouthDetails[1]))
-        // .gte('expireTime', _nowMili)
+        .gte('expireTime', _nowMili)
         );
     
     // save request

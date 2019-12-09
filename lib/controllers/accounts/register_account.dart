@@ -33,7 +33,7 @@ class RegisterConsumerAccount extends ResourceController{
 
     if(_dbRes['status'] != 0){
       _responseStatus = ResponsesStatus.error;
-      _responseBody = {"status": 1, "body": "an error occured"};
+      _responseBody = {"body": "an error occured"};
     } else{
       final String _phoneNo = _dbRes['body']['phoneNo'].toString();
 
@@ -46,15 +46,20 @@ class RegisterConsumerAccount extends ResourceController{
         username: accountSerializer.username
       );
       final Map<String, dynamic> _res = await _accountModel.save();
-      // create wallet
-      await _accountModel.createWallet();
 
       if(_res['status'] != 0){
-        _responseStatus = ResponsesStatus.error;
-        _responseBody = {"status": 1, "body": "an error occured"};
+        if(_res['body']['code'] == 11000){
+          _responseStatus = ResponsesStatus.warning;
+          _responseBody = {"body": "account exist"};
+        }else{
+          _responseStatus = ResponsesStatus.error;
+          _responseBody = {"body": "an error occured"};
+        }
       } else{
+        // create wallet
+        await _accountModel.createWallet();
         _responseStatus = ResponsesStatus.success;
-        _responseBody = {"status": 0, "body": "Account saved"};
+        _responseBody = {"body": "Account saved"};
       }
     }
 

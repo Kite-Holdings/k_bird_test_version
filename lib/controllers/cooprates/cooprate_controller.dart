@@ -33,7 +33,7 @@ class CooprateController extends ResourceController{
       _responseBody= _dbRes;
     } else{
       _responseStatus = ResponsesStatus.failed;
-      _responseBody= {"status": 1, "body": "an error occured"};
+      _responseBody= {"body": "an error occured"};
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
@@ -61,7 +61,7 @@ class CooprateController extends ResourceController{
       _responseBody= _dbRes;
     } else {
       _responseStatus = ResponsesStatus.failed;
-      _responseBody= {"status": 1, "body": "an error occured"};
+      _responseBody= {"body": "an error occured"};
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
@@ -89,7 +89,7 @@ class CooprateController extends ResourceController{
       _responseBody = {'status': 0, 'body': "Cooprate saved."};
     } else {
       if(_dbRes['body']['code'] == 11000){
-        _responseStatus = ResponsesStatus.failed;
+        _responseStatus = ResponsesStatus.warning;
         _responseBody=  {'status': 1, 'body': "name exixts"};
       } else {
         _responseStatus = ResponsesStatus.error;
@@ -118,10 +118,10 @@ class CooprateController extends ResourceController{
     final Map<String, dynamic> _dbRes = await cooprateModel.remove(where.id(ObjectId.parse(cooperateId)));
       if(_dbRes['status'] == 0){
         _responseStatus = ResponsesStatus.success;
-        _responseBody = {"status": 0, "body": "deleted successfully"};
+        _responseBody = {"body": "deleted successfully"};
       } else {
         _responseStatus = ResponsesStatus.failed;
-        _responseBody=  {"status": 1, "body": "invalid id"};
+        _responseBody=  {"body": "invalid id"};
       }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
@@ -162,7 +162,7 @@ class CooprateFindByController extends ResourceController{
         _responseBody = _dbRes;
       } else {
         _responseStatus = ResponsesStatus.failed;
-        _responseBody = {"status": 1, "body": "invalid id"};
+        _responseBody = {"body": "invalid id"};
       }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
@@ -189,7 +189,7 @@ class CooprateFindByController extends ResourceController{
         _responseBody = _dbRes;
       } else {
         _responseStatus = ResponsesStatus.failed;
-        _responseBody = {"status": 1, "body": "invalid id"};
+        _responseBody = {"body": "invalid id"};
       }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);

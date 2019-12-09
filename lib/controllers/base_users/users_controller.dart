@@ -39,11 +39,11 @@ class UserController extends ResourceController{
         _responseBody = _dbRes;
         
       } else {
-        _responseBody = {"status": 1, "body": 'An error occured!'};
+        _responseBody = {"body": 'An error occured!'};
         _responseStatus = ResponsesStatus.failed;
       }
     }catch(e){
-      _responseBody = {"status": 1, "body": 'An error occured!'};
+      _responseBody = {"body": 'An error occured!'};
       _responseStatus = ResponsesStatus.error;
     }
     // Save response
@@ -74,11 +74,11 @@ class UserController extends ResourceController{
         _responseBody = _dbRes;
       } else {
         _responseStatus = ResponsesStatus.failed;
-        _responseBody =  {"status": 1, "body": "invalid id"};
+        _responseBody =  {"body": "invalid id"};
       }
     } catch (e){
       _responseStatus = ResponsesStatus.error;
-      _responseBody = {"status": 1, "body": "An error occured!"};
+      _responseBody = {"body": "An error occured!"};
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
@@ -110,7 +110,7 @@ class UserController extends ResourceController{
         _responseBody = {'status': 0, 'body': "User saved."};
       } else {
         if(_dbRes['body']['code'] == 11000){
-          _responseStatus = ResponsesStatus.failed;
+          _responseStatus = ResponsesStatus.warning;
           _responseBody = {'status': 1, 'body': "email exixts"};
         } else {
           _responseStatus = ResponsesStatus.error;
@@ -147,10 +147,10 @@ class UserController extends ResourceController{
     final Map<String, dynamic> _dbRes = await userModel.remove(where.id(ObjectId.parse(userId)));
       if(_dbRes['status'] == 0){
         _responseStatus = ResponsesStatus.success;
-        _responseBody = {"status": 0, "body": "deleted successfully"};
+        _responseBody = {"body": "deleted successfully"};
       } else {
         _responseStatus = ResponsesStatus.success;
-        _responseBody = {"status": 1, "body": "invalid id"};
+        _responseBody = {"body": "invalid id"};
       }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
@@ -191,7 +191,7 @@ class UserController extends ResourceController{
         _responseBody = _dbRes;
       } else {
         _responseStatus = ResponsesStatus.success;
-        _responseBody = {"status": 1, "body": "invalid id"};
+        _responseBody = {"body": "invalid id"};
       }
       // Save response
       final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);

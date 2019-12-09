@@ -57,10 +57,10 @@ class RegisterAccountVerificationController extends ResourceController{
     if(_otpRes.statusCode != 201){
       print(_otpRes.body);
       _responseStatus = ResponsesStatus.error;
-      _responseBody = {"status": 1, "body": "an error occoured"};
+      _responseBody = {"body": "an error occoured"};
     } else{
       _responseStatus = ResponsesStatus.success;
-      _responseBody = {"status": 0, "body": "Successful. Please wait for otp"};
+      _responseBody = {"body": "Successful. Please wait for otp"};
     }
 
 

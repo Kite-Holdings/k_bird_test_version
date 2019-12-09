@@ -44,7 +44,7 @@ class CooprateTokenController extends ResourceController{
     if(_dbRes['status'] == 0){
         _responseStatus = ResponsesStatus.success;
       _responseBody = {
-          "status": 0,
+          
           "body": {
             "token": _tokenModel.token,
             "validTill": _validTill,
@@ -52,7 +52,7 @@ class CooprateTokenController extends ResourceController{
         };
     } else {
       _responseStatus = ResponsesStatus.error;
-      _responseBody = {"status": 1, "body": "an error occured."};
+      _responseBody = {"body": "an error occured."};
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
@@ -102,7 +102,7 @@ class BaseUserTokenController extends ResourceController{
     if(_dbRes['status'] == 0){
       _responseStatus = ResponsesStatus.success;
       _responseBody = {
-          "status": 0,
+          
           "body": {
             "token": _tokenModel.token,
             "validTill": _validTill,
@@ -110,7 +110,7 @@ class BaseUserTokenController extends ResourceController{
         };
     } else {
       _responseStatus = ResponsesStatus.error;
-      _responseBody = {"status": 1, "body": "an error occured."};
+      _responseBody = {"body": "an error occured."};
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
@@ -155,7 +155,7 @@ class AccoutRegisterTokenController extends ResourceController{
     if(_dbRes['status'] == 0){
       _responseStatus = ResponsesStatus.success;
       _responseBody = {
-          "status": 0,
+          
           "body": {
             "token": _tokenModel.token,
             "validTill": _validTill,
@@ -163,7 +163,7 @@ class AccoutRegisterTokenController extends ResourceController{
         };
     } else {
       _responseStatus = ResponsesStatus.error;
-      _responseBody = {"status": 1, "body": "an error occured."};
+      _responseBody = {"body": "an error occured."};
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBody);

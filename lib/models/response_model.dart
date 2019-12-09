@@ -19,6 +19,7 @@ class ResponsesModel extends Model{
   dynamic responseBody;
 
   Map<String, dynamic> asMap(){
+    responseBody['status'] = _stringResponsesModelStatus().code;
     return{
       "requestId": requestId,
       "responseType": _stringReponseType(),
@@ -40,7 +41,9 @@ class ResponsesModel extends Model{
   }
 
   Response sendResponse([Map<String, dynamic> ressBody]){
-    final _responseBody = ressBody != null ? ressBody : responseBody;
+    final _responseBody ={};
+    _responseBody['status'] = _stringResponsesModelStatus().code;
+    _responseBody['body'] = ressBody != null ? ressBody['body'] : responseBody['body'];
     switch (status) {
       case ResponsesStatus.success:
         return Response.ok(_responseBody);
