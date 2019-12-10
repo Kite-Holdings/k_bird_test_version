@@ -29,7 +29,9 @@ class CooprateController extends ResourceController{
     final Map<String, dynamic> _dbRes = await cooprateModel.find();
     if(_dbRes['status'] == 0){
       _responseStatus = ResponsesStatus.success;
-      _responseBodyModel = _dbRes['status'] == 0 ? _dbRes['body'].length : _dbRes['body'];
+      _responseBodyModel = {
+        'body': _dbRes['status'] == 0 ? _dbRes['body'].length : _dbRes['body'],
+      };
       _responseBody= _dbRes;
     } else{
       _responseStatus = ResponsesStatus.failed;

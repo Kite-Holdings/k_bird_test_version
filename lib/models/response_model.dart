@@ -19,11 +19,16 @@ class ResponsesModel extends Model{
   dynamic responseBody;
 
   Map<String, dynamic> asMap(){
-    responseBody['status'] = _stringResponsesModelStatus().code;
+    // print(responseBody);
+    print(responseBody);
+    // print(responseBody);
+    final Map<String, dynamic> _responseBody = {};
+    _responseBody['status'] = _stringResponsesModelStatus().code;
+    _responseBody['body'] = responseBody == null ? null : responseBody['body'];
     return{
       "requestId": requestId,
       "responseType": _stringReponseType(),
-      "responseBody": responseBody,
+      "responseBody": _responseBody,
       "status": {
         "statusCode": _stringResponsesModelStatus().code,
         "statusMessage": _stringResponsesModelStatus().message,

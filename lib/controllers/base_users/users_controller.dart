@@ -30,7 +30,9 @@ class UserController extends ResourceController{
 
     try{
       final Map<String, dynamic> _dbRes = await userModel.find(where.excludeFields(['password']));
-      _responseBodyModel = _dbRes['status'] == 0 ? _dbRes['body'].length : _dbRes['body'];
+      _responseBodyModel = {
+        'body': _dbRes['status'] == 0 ? _dbRes['body'].length : _dbRes['body'],
+      };
       _responseBody = _dbRes;
       
 

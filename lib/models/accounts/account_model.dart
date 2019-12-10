@@ -1,5 +1,5 @@
 import 'package:kite_bird/models/model.dart';
-import 'package:kite_bird/models/wallet_model.dart';
+import 'package:kite_bird/models/wallets/wallet_model.dart';
 import 'package:password/password.dart';
 
 class AccountModel extends Model{

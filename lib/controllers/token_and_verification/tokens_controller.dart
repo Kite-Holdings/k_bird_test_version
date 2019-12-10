@@ -72,7 +72,6 @@ class BaseUserTokenController extends ResourceController{
   String _requestId;
   final ResposeType _responseType = ResposeType.baseUser;
   ResponsesStatus _responseStatus;
-  dynamic _responseBodyModel;
   Map<String, dynamic> _responseBody;
 
   @Operation.get()
@@ -113,7 +112,7 @@ class BaseUserTokenController extends ResourceController{
       _responseBody = {"body": "an error occured."};
     }
     // Save response
-    final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
+    final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBody);
     unawaited(_responsesModel.save());
     return _responsesModel.sendResponse(_responseBody);
   }
