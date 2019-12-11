@@ -141,7 +141,7 @@ class AccoutRegisterTokenController extends ResourceController{
     _accountRequest.normalRequest();
     _requestId = _accountRequest.requestId();
 
-    final String _collection = registerPhoneverifivationCollection;
+    const String _collection = registerPhoneverifivationCollection;
     final String _ownerId = request.authorization.clientID;
     final TokenModel _tokenModel = TokenModel(
       collection: _collection,

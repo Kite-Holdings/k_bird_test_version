@@ -26,7 +26,7 @@ class AccountLoginController extends ResourceController{
     _accountRequest.normalRequest();
     _requestId = _accountRequest.requestId();
 
-    final String _collection = accountsCollection;
+    const String _collection = accountsCollection;
     final String _ownerId = request.authorization.clientID;
     final TokenModel _tokenModel = TokenModel(
       collection: _collection,
