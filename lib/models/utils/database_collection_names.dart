@@ -7,5 +7,6 @@ const String requestsCollection = 'requests';
 const String responsesCollection = 'responses';
 const String tokensCollection = 'tokens';
 const String transactionsCollection = 'transactions';
+const String transactionResultCollection = 'transactionResult';
 const String walletsCollection = 'wallets';
 const String walletsActivitiesCollection = 'walletsActivities';
