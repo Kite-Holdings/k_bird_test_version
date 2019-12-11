@@ -11,9 +11,11 @@ class RequestsModel extends Model{
     this.metadata,
     this.requestMethod = RequestMethod.getmethod
   }):super(dbUrl: databaseUrl, collectionName: requestsCollection){
+    timeStamp = DateTime.now().toString();
     super.document = asMap();
   }
 
+  String timeStamp;
   final String url;
   final ObjectId id;
   final RequestType requestType;
@@ -26,6 +28,7 @@ class RequestsModel extends Model{
   Map<String, dynamic> asMap(){
     return {
       "_id": id,
+      "timeStamp": timeStamp,
       "url": url,
       "requestType": _stringRequestType(),
       "requestMethod": _stringRequestMethod(),

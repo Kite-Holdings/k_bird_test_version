@@ -10,22 +10,22 @@ class ResponsesModel extends Model{
     this.responseBody,
     this.status,
   }):super(dbUrl: databaseUrl, collectionName: responsesCollection){
+    timeStamp = DateTime.now().toString();
     super.document = asMap();
   }
 
+  String timeStamp;
   String requestId;
   ResposeType responseType;
   ResponsesStatus status;
   dynamic responseBody;
 
   Map<String, dynamic> asMap(){
-    // print(responseBody);
-    print(responseBody);
-    // print(responseBody);
     final Map<String, dynamic> _responseBody = {};
     _responseBody['status'] = _stringResponsesModelStatus().code;
     _responseBody['body'] = responseBody == null ? null : responseBody['body'];
     return{
+      "timeStamp": timeStamp,
       "requestId": requestId,
       "responseType": _stringReponseType(),
       "responseBody": _responseBody,

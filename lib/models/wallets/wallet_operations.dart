@@ -73,7 +73,8 @@ class WalletActivities extends Model{
     this.transactionType,
     this.walletNo
   }): super(dbUrl: databaseUrl, collectionName: walletsActivitiesCollection){
-  super.document = asMap();
+    timeStamp = DateTime.now().toString();
+    super.document = asMap();
   }
 
   final String walletNo;
@@ -82,7 +83,7 @@ class WalletActivities extends Model{
   final WalletOperationType operation;
   final double amount;
   final double balance;
-  String timeStamp = DateTime.now().toString();
+  String timeStamp;
 
   Map<String, dynamic> asMap()=>{
     'amount': amount,
