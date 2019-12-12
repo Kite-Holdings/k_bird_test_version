@@ -4,7 +4,7 @@ import 'package:kite_bird/kite_bird.dart';
 Future main() async {
   final app = Application<KiteBirdChannel>()
       ..options.configurationFilePath = "config.yaml"
-      ..options.port = 8888;
+      ..options.port = 2027;
 
   final count = Platform.numberOfProcessors ~/ 2;
   await app.start(numberOfInstances: count > 0 ? count : 1);
