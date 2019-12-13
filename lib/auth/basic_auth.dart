@@ -213,7 +213,7 @@ class AccountLoginAouthVerifier extends AuthValidator {
         _responseStatus = ResponsesStatus.failed;
         _authorization = null;
       }else{
-        if(_accountModel.verifyPassword(_aouthDetails[0], item['password'].toString())){
+        if(_accountModel.verifyPassword(_aouthDetails[1], item['password'].toString())){
           _authorization = Authorization(item['_id'].toString().split('\"')[1], 0, null);
         } else {
           _responseBody = {"status": 1, "body": "wrong credentials"};

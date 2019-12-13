@@ -10,8 +10,9 @@ class AccountModel extends Model{
     this.username, 
     this.cooprateCode,
     }) : super(dbUrl: databaseUrl, collectionName: accountsCollection){
-    super.document = asMap();
-  }
+      _hash = Password.hash(password.toString(), PBKDF2());
+      super.document = asMap();
+    }
 
   final AccountType accountType;
   final String phoneNo;
@@ -19,12 +20,13 @@ class AccountModel extends Model{
   final String username;
   final String cooprateCode;
   ObjectId _id;
+  String _hash;
 
   
 
   Map<String, dynamic> asMap(){
     // hash password
-    final String _hash = Password.hash(password.toString(), PBKDF2());
+    
     _id = ObjectId();
     return {
       '_id': _id,
