@@ -109,19 +109,19 @@ class UserController extends ResourceController{
       final Map<String, dynamic> _dbRes = await _userModel.save();
       if(_dbRes['status'] == 0){
         _responseStatus = ResponsesStatus.success;
-        _responseBody = {'status': 0, 'body': "User saved."};
+        _responseBody = {'body': "User saved."};
       } else {
         if(_dbRes['body']['code'] == 11000){
           _responseStatus = ResponsesStatus.warning;
-          _responseBody = {'status': 1, 'body': "email exixts"};
+          _responseBody = {'body': "email exixts"};
         } else {
           _responseStatus = ResponsesStatus.error;
-          _responseBody = {'status': 1, 'body': 'An error occured!'};
+          _responseBody = {'body': 'An error occured!'};
         }
       }
     }catch (e){
       _responseStatus = ResponsesStatus.error;
-      _responseBody =  {'status': 1, 'body': 'An error occured!'};
+      _responseBody =  {'body': 'An error occured!'};
     }
 
     // Save response

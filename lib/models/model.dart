@@ -98,8 +98,22 @@ class Model{
     }
     
   }
+  
+  // Find one by
+  Future<Map<String, dynamic>> findOneBy([SelectorBuilder selector]) async {
+    await _db.open();
+    try{
+      final Map<String, dynamic> _res = await _dbCollection.findOne(selector);
+      await _db.close();
+      return _response(true, _res);
+    } catch (e) {
+      await _db.close();
+      return _response(false, e);
+    }
+    
+  }
 
-  // find by id
+  // find by id 
   Future<Map<String, dynamic>> findById(String id, [List<String> exclude = const []]) async {
     await _db.open();
     try{

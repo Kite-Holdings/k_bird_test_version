@@ -10,7 +10,6 @@ class MpesaOperations{
     String requestId, 
     String phoneNo, 
     String amount, 
-    String accRef, 
     String callBackUrl,
     String referenceNumber,
     String transactionDesc,
@@ -43,7 +42,7 @@ class MpesaOperations{
         "PartyB": mpesaBusinesShortCode,
         "PhoneNumber": phoneNo,
         "CallBackURL": '${mpesaCallBackURL}/cb/$requestId',
-        "AccountReference": referenceNumber != null ? referenceNumber : accRef,
+        "AccountReference": referenceNumber,
         "TransactionDesc": transactionDesc
       };
 
@@ -53,9 +52,19 @@ class MpesaOperations{
           'Authorization': 'Bearer $accessToken'
       };
 
-
+      try{
+        final http.Response _res = await http.post(mpesaCbUrL, headers: _headers, body: json.encode(_payload));
+        return {
+          "status": 0,
+          "body": _res
+        };
+      } catch (e){
+        return {
+          "status": 3,
+          "body": "cannot reach endpoint"
+        };
+      }
     }
-
   }
 
   Future<Map<String, dynamic>> fetchToken()async{
