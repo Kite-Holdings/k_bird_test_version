@@ -31,7 +31,7 @@ class CooprateTokenController extends ResourceController{
     _requestId = _cooperateRequest.requestId();
 
 
-    final String _collection = cooprateCollection;
+    const String _collection = cooprateCollection;
     final String _ownerId = request.authorization.clientID;
     final TokenModel _tokenModel = TokenModel(
       collection: _collection,

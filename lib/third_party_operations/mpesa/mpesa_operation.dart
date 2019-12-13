@@ -68,8 +68,8 @@ class MpesaOperations{
   }
 
   Future<Map<String, dynamic>> fetchToken()async{
-    final String username = mpesaConsumerKey;
-    final String password = mpesaConsumerSecret;
+    const String username = mpesaConsumerKey;
+    const String password = mpesaConsumerSecret;
     final _base64E = base64Encode(utf8.encode('$username:$password'));
     final String basicAuth = 'Basic $_base64E';
 

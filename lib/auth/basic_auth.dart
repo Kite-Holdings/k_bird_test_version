@@ -39,7 +39,7 @@ class CooprateBasicAouthVerifier extends AuthValidator {
       if(_company == null) {
         _responseBody =  {"message": "Wrong Consumer Key"};
         _responseStatus = ResponsesStatus.failed;
-        _authorization = Authorization(null, 0, null);
+        _authorization = null;
         }
 
       if (_company['secretKey'].toString() == _aouthDetails[1].toString()) {
@@ -50,7 +50,7 @@ class CooprateBasicAouthVerifier extends AuthValidator {
         _id = _company['_id'].toString().split('\"')[1];
         _responseBody =  {"message": "Wrong Secret Key"};
         _responseStatus = ResponsesStatus.failed;
-        _authorization = Authorization(null, 0, null);
+        _authorization = null;
       }
     }
 
@@ -93,13 +93,12 @@ class BaseUserBasicAouthVerifier extends AuthValidator {
       _responseStatus = ResponsesStatus.error;
       _authorization = null;
     } else {
-      
       final _account = _accounts['body'].length !=0 ? _accounts['body'].first : null;
 
       if(_account == null) {
         _responseBody = {"status": 1, "body": "wrong Email"};
         _responseStatus = ResponsesStatus.failed;        
-        _authorization = Authorization(null, 0, null);
+        _authorization = null;
 
       } 
       else if (userModel.verifyPassword(_aouthDetails[1], _account['password'].toString())) {
@@ -109,7 +108,7 @@ class BaseUserBasicAouthVerifier extends AuthValidator {
       else {
         _responseBody = {"status": 1, "body": "wrong Password"};
         _responseStatus = ResponsesStatus.failed;
-        _authorization = Authorization(null, 0, null);
+        _authorization = null;
       }
 
     }
