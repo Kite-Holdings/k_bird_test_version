@@ -13,7 +13,8 @@ class WalletOperations{
   final String sender;
   final double amount;
 
-  Future<Map<String, dynamic>> deposit()async{
+  Future<bool> deposit()async{
+    bool _successful = false;
     final WalletModel _walletModel = WalletModel();
     final Map<String, dynamic> _dbres = await _walletModel.findAndModify(
       selector: where.eq("walletNo", recipient),
@@ -31,13 +32,17 @@ class WalletOperations{
           walletNo: recipient
         );
         await _walletActivities.save();
+        _successful = true;
+      } else{
+        _successful = false;
       }
     }
 
-    return _dbres;
+    return _successful;
   }
 
-  Future<Map<String, dynamic>> withdraw()async{
+  Future<bool> withdraw()async{
+    bool _successful = false;
     final WalletModel _walletModel = WalletModel();
     final Map<String, dynamic> _dbres = await _walletModel.findAndModify(
       selector: where.eq("walletNo", sender).gt("balance", amount),
@@ -55,10 +60,14 @@ class WalletOperations{
           walletNo: sender
         );
         await _walletActivities.save();
+        _successful = true;
+      } else {
+        _successful = false;
       }
     }
 
-    return _dbres;
+    return _successful;
+    // return _dbres;
   }
 
 

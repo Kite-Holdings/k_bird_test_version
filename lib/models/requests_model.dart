@@ -64,9 +64,10 @@ class RequestsModel extends Model{
       case RequestType.token:
         return 'token';
         break;
-      case RequestType.baseUser:
-        return 'baseUser';
+      case RequestType.wallet:
+        return 'wallet';
         break;
+      
       default:
         return 'notDefined';
     }
@@ -91,6 +92,9 @@ class RequestsModel extends Model{
         break;
       case 'baseUser':
         return RequestType.baseUser;
+        break;
+      case 'wallet':
+        return RequestType.wallet;
         break;
       default:
         return RequestType.notDefined;
@@ -144,7 +148,8 @@ enum RequestType{
   mpesaStkPush,
   notDefined,
   token,
-  baseUser
+  baseUser,
+  wallet
 }
 
 enum RequestMethod{

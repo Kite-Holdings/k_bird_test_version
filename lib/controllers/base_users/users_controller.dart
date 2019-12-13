@@ -70,7 +70,7 @@ class UserController extends ResourceController{
 
 
     try{
-      final Map<String, dynamic> _dbRes = await userModel.findById(userId, ['password']);
+      final Map<String, dynamic> _dbRes = await userModel.findById(userId, exclude: ['password']);
       if(_dbRes['status'] == 0){
         _responseStatus = ResponsesStatus.success;
         _responseBody = _dbRes;

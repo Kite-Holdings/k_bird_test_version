@@ -76,7 +76,7 @@ class RegisterAccountVerificationController extends ResourceController{
     final _base64E = base64Encode(utf8.encode('$username:$password'));
     final String basicAuth = 'Basic $_base64E';
 
-    const String _url = 'https://api.twilio.com/2010-04-01/Accounts/AC09fd4c14e2b2fb6ad34c7ae442728b4d/Messages.json';
+    const String _url = 'https://api.twilio.com/2010-04-01/Accounts/AC11dedec95adfb30af91d7e425975b823/Messages.json';
     final Map<String, String> _body = {
       "Body": "To verify your Kite Wallet account enter the code: $otp",
       "From": numberTwilio,

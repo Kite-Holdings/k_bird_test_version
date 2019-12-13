@@ -46,6 +46,8 @@ class MpesaOperations{
         "TransactionDesc": transactionDesc
       };
 
+      print(_payload);
+
 
       final Map<String, String> _headers = {
           'content-type': 'application/json',

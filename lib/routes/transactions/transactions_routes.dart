@@ -1,4 +1,6 @@
+import 'package:kite_bird/auth/bearer_auth.dart';
 import 'package:kite_bird/controllers/transactions/callbacks/mpesa_callback_controller.dart';
+import 'package:kite_bird/controllers/transactions/kite_wallet/wallet_to_wallet.dart';
 import 'package:kite_bird/controllers/transactions/mpesa/mpesa_cb_wallet.dart';
 import 'package:kite_bird/kite_bird.dart';
 
@@ -13,6 +15,12 @@ Router transactionsRoutes(Router router){
   router
     .route('mResponces/cb/:requestId')
     .link(()=> MpesaStkCallbackController());
+
+  // wallet to wallet
+  router
+    .route('/$_baseUrl/walletToWallet')
+    .link(()=> Authorizer.bearer(AccountBearerAouthVerifier()))
+    .link(()=> WalletToWalletController());
 
 
   return router;

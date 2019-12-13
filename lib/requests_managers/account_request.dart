@@ -21,6 +21,10 @@ class AccountRequest{
         _requestMethod = RequestMethod.postMethod;
         _url = '/account/consumer';
         break;
+      case AccountRequestsType.getDetails:
+        _requestMethod = RequestMethod.getmethod;
+        _url = '/account';
+        break;
       case AccountRequestsType.registerMerchant:
         _requestMethod = RequestMethod.postMethod;
         _url = '/account/merchant';
@@ -66,6 +70,7 @@ enum AccountRequestsType{
   getAll,
   getByid,
   getByPhoneNo,
+  getDetails,
   login,
   registerConsumer,
   registerMerchant,

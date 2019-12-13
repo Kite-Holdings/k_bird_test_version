@@ -100,10 +100,10 @@ class Model{
   }
   
   // Find one by
-  Future<Map<String, dynamic>> findOneBy([SelectorBuilder selector]) async {
+  Future<Map<String, dynamic>> findOneBy(SelectorBuilder selector, {List<String> exclude = const [], List<String> fields = const []}) async {
     await _db.open();
     try{
-      final Map<String, dynamic> _res = await _dbCollection.findOne(selector);
+      final Map<String, dynamic> _res = await _dbCollection.findOne(selector.excludeFields(exclude));
       await _db.close();
       return _response(true, _res);
     } catch (e) {
@@ -114,10 +114,10 @@ class Model{
   }
 
   // find by id 
-  Future<Map<String, dynamic>> findById(String id, [List<String> exclude = const []]) async {
+  Future<Map<String, dynamic>> findById(String id, {List<String> exclude = const [], List<String> fields = const []}) async {
     await _db.open();
     try{
-      final Map<String, dynamic> _res = await _dbCollection.findOne(where.id(ObjectId.parse(id)).excludeFields(exclude));
+      final Map<String, dynamic> _res = await _dbCollection.findOne(where.id(ObjectId.parse(id)).fields(fields).excludeFields(exclude));
       await _db.close();
       return _response(true, _res);
     } catch (e) {
@@ -128,10 +128,10 @@ class Model{
   }
 
   // find by selector
-  Future<Map<String, dynamic>> findBySelector(SelectorBuilder selector) async {
+  Future<Map<String, dynamic>> findBySelector(SelectorBuilder selector, {List<String> exclude = const [], List<String> fields = const []}) async {
     await _db.open();
     try{
-      final List<Map<String, dynamic>> _res = await _dbCollection.find(selector).toList();
+      final List<Map<String, dynamic>> _res = await _dbCollection.find(selector.excludeFields(exclude)).toList();
       await _db.close();
       return _response(true, _res);
     } catch (e) {
