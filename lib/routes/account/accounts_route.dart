@@ -13,18 +13,18 @@ Router accountsRoute(Router router){
     .link(()=> AccountLoginController());
 
   router
-    .route('/accounts/consumer')
-    .link(()=> Authorizer.bearer(RegisterAccountBearerAouthVerifier()))
+    .route('/accounts/consumer/register')
+    .link(()=> Authorizer.basic(AccountVerifyOtpAouthVerifier()))
     .link(()=> RegisterConsumerAccount());
     
   router
     .route('/accounts/verifyNumber')
     .link(()=> Authorizer.bearer(CooprateBearerAouthVerifier()))
     .link(()=> RegisterAccountVerificationController());
-  
+
   router
     .route('/verifyOtp')
-    .link(()=> Authorizer.basic(AccountVerifyOtpAouthVerifier()))
+    
     .link(() => AccoutRegisterTokenController());
 
   return router;

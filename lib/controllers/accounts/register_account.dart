@@ -16,6 +16,7 @@ class RegisterConsumerAccount extends ResourceController{
   @Operation.post()
   Future<Response> create(@Bind.body(require: ['username', 'password']) AccountSerializer accountSerializer)async{
     // Save Request
+    print(",,,,");
     final AccountRequest _accountRequest = AccountRequest(
       account: request.authorization != null ? request.authorization.clientID : null,
       accountRequestsType: AccountRequestsType.registerConsumer,
@@ -30,6 +31,7 @@ class RegisterConsumerAccount extends ResourceController{
     final CooprateModel _cooprateModel = CooprateModel();
     final Map<String, dynamic> _cooprateMap =await _cooprateModel.findById(_dbRes['body']['cooprateId'].toString()); 
 
+    print(_cooprateMap);
 
     if(_dbRes['status'] != 0){
       _responseStatus = ResponsesStatus.error;
