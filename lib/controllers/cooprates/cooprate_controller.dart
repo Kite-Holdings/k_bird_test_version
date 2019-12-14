@@ -17,9 +17,14 @@ class CooprateController extends ResourceController{
 
   @Operation.get()
   Future<Response> getAll()async{
+    String _name;
+    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    if(_dbResUser['status'] == 0){
+      _name  = _dbResUser['body']['name'].toString();
+    }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _name,
       cooperateRequestsType: CooperateRequestsType.getAll,
       metadata: null
     );
@@ -45,9 +50,14 @@ class CooprateController extends ResourceController{
 
   @Operation.get('cooperateId')
   Future<Response> getOne(@Bind.path("cooperateId") String cooperateId)async{
+    String _name;
+    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    if(_dbResUser['status'] == 0){
+      _name  = _dbResUser['body']['name'].toString();
+    }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _name,
       cooperateRequestsType: CooperateRequestsType.getByid,
       metadata: {
         "cooperateId": cooperateId
@@ -73,9 +83,14 @@ class CooprateController extends ResourceController{
 
   @Operation.post()
   Future<Response> registerCompany(@Bind.body(require: ['name']) CoopratesSerializer coopratesSerializer)async{
+    String _name;
+    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    if(_dbResUser['status'] == 0){
+      _name  = _dbResUser['body']['name'].toString();
+    }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _name,
       cooperateRequestsType: CooperateRequestsType.create,
       metadata: coopratesSerializer.asMap()
     );
@@ -106,9 +121,14 @@ class CooprateController extends ResourceController{
 
   @Operation.delete('cooperateId')
   Future<Response> delete(@Bind.path("cooperateId") String cooperateId)async{
+    String _name;
+    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    if(_dbResUser['status'] == 0){
+      _name  = _dbResUser['body']['name'].toString();
+    }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _name,
       cooperateRequestsType: CooperateRequestsType.delete,
       metadata: {
         "cooperateId": cooperateId
@@ -146,9 +166,14 @@ class CooprateFindByController extends ResourceController{
 
   @Operation.get('cooprateName')
   Future<Response> getByNameSelector(@Bind.path("cooprateName") String cooprateName)async{
+    String _name;
+    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    if(_dbResUser['status'] == 0){
+      _name  = _dbResUser['body']['name'].toString();
+    }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _name,
       cooperateRequestsType: CooperateRequestsType.getByName,
       metadata: {
         "cooperateId": cooprateName
@@ -173,9 +198,14 @@ class CooprateFindByController extends ResourceController{
   }
   @Operation.get('cooprateCode')
   Future<Response> getByCodeSelector(@Bind.path("cooprateCode") String cooprateCode)async{
+    String _name;
+    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    if(_dbResUser['status'] == 0){
+      _name  = _dbResUser['body']['name'].toString();
+    }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _name,
       cooperateRequestsType: CooperateRequestsType.getByCooprateCode,
       metadata: {
         "cooprateCode": cooprateCode

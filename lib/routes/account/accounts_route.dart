@@ -4,7 +4,6 @@ import 'package:kite_bird/controllers/accounts/account_controller.dart';
 import 'package:kite_bird/controllers/accounts/account_login_controller.dart';
 import 'package:kite_bird/controllers/accounts/register_account.dart';
 import 'package:kite_bird/controllers/accounts/register_accountverification_controller.dart';
-import 'package:kite_bird/controllers/token_and_verification/tokens_controller.dart';
 import 'package:kite_bird/kite_bird.dart';
 
 Router accountsRoute(Router router){
@@ -27,11 +26,6 @@ Router accountsRoute(Router router){
     .route('/accounts/verifyNumber')
     .link(()=> Authorizer.bearer(CooprateBearerAouthVerifier()))
     .link(()=> RegisterAccountVerificationController());
-
-  router
-    .route('/verifyOtp')
-    
-    .link(() => AccoutRegisterTokenController());
 
   return router;
 }

@@ -17,9 +17,14 @@ class UserController extends ResourceController{
 
   @Operation.get()
   Future<Response> getAll()async{
+    String _email;
+    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
+    if(_dbResUser['status'] == 0){
+      _email  = _dbResUser['body']['email'].toString();
+    }
     // save request
     final BaseUserRequests _baseUserRequests = BaseUserRequests(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _email,
       baseUserRequestsType: BaseUserRequestsType.getAll,
       metadata: {
         "function": 'Get all users'
@@ -56,9 +61,14 @@ class UserController extends ResourceController{
 
   @Operation.get('userId')
   Future<Response> getOne(@Bind.path("userId") String userId)async{
+    String _email;
+    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
+    if(_dbResUser['status'] == 0){
+      _email  = _dbResUser['body']['email'].toString();
+    }
     // Save request 
     final BaseUserRequests _baseUserRequests = BaseUserRequests(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _email,
       baseUserRequestsType: BaseUserRequestsType.getByid,
       metadata: {
         "function": 'Get one users by userId',
@@ -90,9 +100,14 @@ class UserController extends ResourceController{
 
   @Operation.post()
   Future<Response> createUser(@Bind.body(require: ['email', 'password', 'role']) UsersSerializer usersSerializer)async{
+    String _email;
+    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
+    if(_dbResUser['status'] == 0){
+      _email  = _dbResUser['body']['email'].toString();
+    }
     // Save request 
     final BaseUserRequests _baseUserRequests = BaseUserRequests(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _email,
       baseUserRequestsType: BaseUserRequestsType.create,
       metadata: usersSerializer.asMap(),
     );
@@ -133,9 +148,14 @@ class UserController extends ResourceController{
 
   @Operation.delete('userId')
   Future<Response> delete(@Bind.path("userId") String userId)async{
+    String _email;
+    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
+    if(_dbResUser['status'] == 0){
+      _email  = _dbResUser['body']['email'].toString();
+    }
     // Save request 
     final BaseUserRequests _baseUserRequests = BaseUserRequests(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _email,
       baseUserRequestsType: BaseUserRequestsType.delete,
       metadata: {
         "function": 'Delete one users',
@@ -174,9 +194,14 @@ class UserController extends ResourceController{
 
   @Operation.get('email')
   Future<Response> getByNameSelector(@Bind.path("email") String email)async{
+    String _email;
+    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
+    if(_dbResUser['status'] == 0){
+      _email  = _dbResUser['body']['email'].toString();
+    }
     // Save request 
     final BaseUserRequests _baseUserRequests = BaseUserRequests(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _email,
       baseUserRequestsType: BaseUserRequestsType.getByEmail,
       metadata: {
         "function": 'Get one users by email',

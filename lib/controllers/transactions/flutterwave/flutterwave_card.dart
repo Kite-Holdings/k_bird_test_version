@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:kite_bird/kite_bird.dart';
+import 'package:kite_bird/models/accounts/account_model.dart';
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/wallets/wallet_model.dart';
 import 'package:kite_bird/requests_managers/fluterwave_requests.dart';
@@ -9,6 +10,7 @@ import 'package:kite_bird/third_party_operations/flutterwave/flutterwave_operati
 import 'package:pedantic/pedantic.dart';
 
 class FlutterWaveCardTransactionController extends ResourceController{
+  final AccountModel accountModel = AccountModel();
 
   String _requestId;
   final ResposeType _responseType = ResposeType.card;
@@ -20,9 +22,14 @@ class FlutterWaveCardTransactionController extends ResourceController{
     @Bind.body(require: ['cardNo', 'cvv', 'expiryMonth', 'expiryYear', 'amount', 'email', 'walletNo', 'callbackUrl'])
     FlutterwaveCardSerializer flutterwaveCardSerializer
     )async{
+    final Map<String, dynamic> _dbResAcc =await accountModel.findById(request.authorization.clientID, fields: ['phoneNo']);
+    String _phoneNo;
+    if(_dbResAcc['status'] == 0){
+      _phoneNo  = _dbResAcc['body']['phoneNo'].toString();
+    }
       // save request
     final FlutterwaveRequests _flutterwaveRequests = FlutterwaveRequests(
-      account: null,
+      account: _phoneNo,
       metadata: {
         'amount': flutterwaveCardSerializer.amount,
         'cardNo': flutterwaveCardSerializer.cardNo,

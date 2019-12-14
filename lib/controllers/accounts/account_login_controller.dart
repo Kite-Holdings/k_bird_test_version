@@ -17,7 +17,7 @@ class AccountLoginController extends ResourceController{
     // Save request 
     final AccountRequest _accountRequest = AccountRequest(
       account: request.authorization != null ? request.authorization.clientID : null,
-      accountRequestsType: AccountRequestsType.verifyOtp,
+      accountRequestsType: AccountRequestsType.login,
       metadata: {
         "function": 'Account Login',
         "accountId": request.authorization.clientID

@@ -146,7 +146,7 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
     // save request
     final AccountRequest _accountRequest = AccountRequest(
       account: _aouthDetails[0],
-      accountRequestsType: AccountRequestsType.verifyOtp,
+      accountRequestsType: AccountRequestsType.registerConsumer,
       metadata: _aouthDetails
     );
     _accountRequest.normalRequest();
@@ -196,7 +196,7 @@ class AccountLoginAouthVerifier extends AuthValidator {
     // save request
     final AccountRequest _accountRequest = AccountRequest(
       account: _aouthDetails[0],
-      accountRequestsType: AccountRequestsType.verifyOtp,
+      accountRequestsType: AccountRequestsType.login,
       metadata: _aouthDetails
     );
     _accountRequest.normalRequest();

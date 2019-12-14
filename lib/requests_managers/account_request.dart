@@ -19,7 +19,7 @@ class AccountRequest{
     switch (accountRequestsType) {
       case AccountRequestsType.registerConsumer:
         _requestMethod = RequestMethod.postMethod;
-        _url = '/account/consumer';
+        _url = '/account/consumer/register';
         break;
       case AccountRequestsType.getDetails:
         _requestMethod = RequestMethod.getmethod;
@@ -74,6 +74,6 @@ enum AccountRequestsType{
   login,
   registerConsumer,
   registerMerchant,
-  verifyOtp,
   verifyPhoneNo,
+  
 }

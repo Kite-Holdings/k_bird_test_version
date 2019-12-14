@@ -27,7 +27,7 @@ Router transactionsRoutes(Router router){
   // card to wallet
   router
     .route('/$_baseUrl/cardToWallet')
-    // .link(()=> Authorizer.bearer(AccountBearerAouthVerifier()))
+    .link(()=> Authorizer.bearer(AccountBearerAouthVerifier()))
     .link(()=> FlutterWaveCardTransactionController());
 
   // card callback
