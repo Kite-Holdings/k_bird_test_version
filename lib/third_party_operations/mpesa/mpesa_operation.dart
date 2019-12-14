@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:kite_bird/third_party_operations/mpesa/mpesa_settings.dart';
+import 'package:kite_bird/configs/mpesa/mpesa_configs.dart';
 import 'package:kite_bird/utils/stringify_int.dart';
 
 class MpesaOperations{

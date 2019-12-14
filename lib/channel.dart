@@ -1,5 +1,4 @@
 import 'package:kite_bird/routes/routers_export.dart';
-import 'package:kite_bird/routes/transactions/transactions_routes.dart';
 
 import 'kite_bird.dart';
 class KiteBirdChannel extends ApplicationChannel {

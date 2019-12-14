@@ -2,6 +2,7 @@ const String accountsCollection = 'accounts';
 const String baseUserCollection = 'baseUsers';
 const String cooprateCollection = 'cooprates';
 const String counterCollection = 'counter';
+const String flutterwaveResponsesCollection = 'flutterwaveResponses';
 const String mpesaResponsesCollection = 'mpesaResponses';
 const String registerPhoneverifivationCollection = 'registerPhoneverifivation';
 const String requestsCollection = 'requests';

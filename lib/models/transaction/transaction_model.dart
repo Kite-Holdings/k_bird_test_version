@@ -72,6 +72,9 @@ String transactionTypeToString(TransactionType _transactionType){
     case TransactionType.walletTowallet:
       return 'walletTowallet';
       break;
+    case TransactionType.cardToWallet:
+      return 'cardToWallet';
+      break;
     case TransactionType.mpesaCb:
       return 'mpesaCb';
       break;
@@ -85,6 +88,9 @@ TransactionType stringToTransactionType(String _value){
     case 'walletTowallet':
       return TransactionType.walletTowallet;
       break;
+    case 'cardToWallet':
+      return TransactionType.cardToWallet;
+      break;
     case 'mpesaCb':
       return TransactionType.mpesaCb;
       break;
@@ -95,6 +101,7 @@ TransactionType stringToTransactionType(String _value){
 
 
 enum TransactionType{
+  cardToWallet,
   mpesaCb,
   walletTowallet,
   nonDefined

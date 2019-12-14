@@ -53,7 +53,7 @@ class WalletToWalletController extends ResourceController{
         recipient: walletToWalletSerializer.recipientNo,
         sender: _walletNo
       );
-      
+      // TODO: save transaction
       if(await walletOperations.withdraw()){
         if(await walletOperations.deposit()){
           _responseStatus = ResponsesStatus.success;

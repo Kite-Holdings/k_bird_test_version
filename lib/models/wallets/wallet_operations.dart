@@ -2,16 +2,20 @@ import 'package:kite_bird/models/model.dart';
 import 'package:kite_bird/models/transaction/transaction_model.dart' show TransactionType, transactionTypeToString, stringToTransactionType;
 import 'package:kite_bird/models/wallets/wallet_model.dart';
 
+export 'package:kite_bird/models/transaction/transaction_model.dart' show TransactionType;
+
 class WalletOperations{
   WalletOperations({
     this.amount,
     this.recipient,
-    this.sender
+    this.sender,
+    this.transactionType = TransactionType.walletTowallet
   });
 
   final String recipient;
   final String sender;
   final double amount;
+  final TransactionType transactionType;
 
   Future<bool> deposit()async{
     bool _successful = false;
@@ -28,7 +32,7 @@ class WalletOperations{
           balance: _balance,
           operation: WalletOperationType.recieve,
           secondPartNo: sender,
-          transactionType: TransactionType.walletTowallet,
+          transactionType: transactionType,
           walletNo: recipient
         );
         await _walletActivities.save();
