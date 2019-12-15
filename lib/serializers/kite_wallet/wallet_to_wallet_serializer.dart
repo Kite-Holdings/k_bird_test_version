@@ -23,6 +23,9 @@ class WalletToWalletSerializer extends Serializable{
     try {
       double.parse(object['amount'].toString());
       _reject = reject;
+      if(double.parse(object['amount'].toString()) < 0){
+        _reject = ['amount'];
+      }
     } catch (e) {
       _reject = ['amount'];
     }

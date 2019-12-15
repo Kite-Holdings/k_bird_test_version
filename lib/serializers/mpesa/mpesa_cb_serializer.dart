@@ -25,6 +25,15 @@ class MpesaCbSerializer extends Serializable{
     Iterable<String> _reject;
     if(_allAreNumbers.hasMatch(_phoneNo) && _startsWith.hasMatch(_phoneNo)){
       _reject = reject;
+      try {
+        double.parse(object['amount'].toString());
+        _reject = reject;
+        if(double.parse(object['amount'].toString()) < 0){
+          _reject = ['amount'];
+        }
+      } catch (e) {
+        _reject = ['amount'];
+      }
     } else{
       _reject = ['phoneNo'];
     }
@@ -40,5 +49,6 @@ class MpesaCbSerializer extends Serializable{
     referenceNumber = object['referenceNumber'].toString();
     transactionDesc = object['transactionDesc'].toString();
   }
+  
 
 }

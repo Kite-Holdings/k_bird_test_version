@@ -1,4 +1,5 @@
 import 'package:kite_bird/kite_bird.dart';
+import 'package:kite_bird/third_party_operations/mpesa/check_stk_process.dart';
 // import 'package:kite_bird/models/model.dart';
 
 Future main() async {
@@ -12,6 +13,14 @@ Future main() async {
   // // create indexes
   // final Model _model = Model(dbUrl: databaseUrl);
   // _model.indexes();
+  // int i = 0;
+  const bool _check = true;
+  while(_check){
+    // i++;
+    // print('........................................$i');
+    await checkStkProcessStatus();
+    await Future.delayed(const Duration(seconds: 100));
+  }
 
   print("Application started on port: ${app.options.port}.");
   print("Use Ctrl-C (SIGINT) to stop running the application.");

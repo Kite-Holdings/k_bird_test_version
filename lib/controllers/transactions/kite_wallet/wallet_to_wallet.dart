@@ -1,6 +1,8 @@
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/accounts/account_model.dart';
 import 'package:kite_bird/models/response_model.dart';
+import 'package:kite_bird/models/transaction/transaction_model.dart';
+import 'package:kite_bird/models/transaction/transaction_result_model.dart';
 import 'package:kite_bird/models/wallets/wallet_model.dart';
 import 'package:kite_bird/models/wallets/wallet_operations.dart';
 import 'package:kite_bird/requests_managers/kite_wallet_requests.dart';
@@ -53,15 +55,47 @@ class WalletToWalletController extends ResourceController{
         recipient: walletToWalletSerializer.recipientNo,
         sender: _walletNo
       );
-      // TODO: save transaction
-      if(await walletOperations.withdraw()){
-        if(await walletOperations.deposit()){
+      
+      final bool _withdrew = await walletOperations.withdraw();
+      if(_withdrew){
+        final bool _deposited = await walletOperations.deposit();
+        if(_deposited){
           _responseStatus = ResponsesStatus.success;
           _responseBody = {"body": "Transaction successful"};
         } else{
           _responseStatus = ResponsesStatus.error;
           _responseBody = {"body": "Depositing to recipient failed!"};
         }
+
+        // Save Transaction
+        final TransactionModel _transactionModel = TransactionModel(
+          amount: walletToWalletSerializer.amount,
+          cost: 0,
+          recipientNo: walletToWalletSerializer.recipientNo,
+          senderNo: _walletNo,
+          transactionType: TransactionType.walletTowallet,
+          state: _deposited ? TransactionState.complete : TransactionState.processing
+        );
+        await _transactionModel.save();
+
+        // Save Transaction reslut
+        final TransactionResult _transactionResult = TransactionResult(
+          resultStatus: _deposited ? TransactionResultStatus.complete : TransactionResultStatus.failed,
+          reqRef: _requestId,
+          // transactionId: ,
+          channel: TransactionChannel.kiteBird,
+          paymentRef: walletToWalletSerializer.recipientNo,
+          // receiptRef: ,
+          receiptNo: walletToWalletSerializer.recipientNo,
+          amount: walletToWalletSerializer.amount.toString(),
+          charges: '0',
+          receiverParty: "KiteBird",
+          senderAccount: _walletNo,
+          completeDateTime: DateTime.now().toString(),
+        );
+
+        await _transactionResult.save();
+
       } else{
         final Map<String, dynamic> _dbResWalletBalance = await walletModel.findOneBy(where.eq('walletNo', _walletNo), fields: ['balance']);
         if(_dbResWalletBalance['status'] == 0){

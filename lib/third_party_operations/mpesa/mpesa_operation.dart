@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:kite_bird/configs/mpesa/mpesa_configs.dart';
+import 'package:kite_bird/third_party_operations/mpesa/fetch_token.dart';
 import 'package:kite_bird/utils/stringify_int.dart';
 
 class MpesaOperations{
@@ -15,7 +16,7 @@ class MpesaOperations{
     String transactionDesc,
   })async{
 
-    final Map<String, dynamic> _tokenRes = await fetchToken();
+    final Map<String, dynamic> _tokenRes = await fetchMpesaToken();
     if(_tokenRes['status'] != 0){
       return {
         "status": 3,
@@ -41,12 +42,11 @@ class MpesaOperations{
         "PartyA": phoneNo,
         "PartyB": mpesaBusinesShortCode,
         "PhoneNumber": phoneNo,
-        "CallBackURL": '${mpesaCallBackURL}/cb/$requestId',
+        "CallBackURL": '$mpesaCallBackURL/cb/$requestId',
         "AccountReference": referenceNumber,
         "TransactionDesc": transactionDesc
       };
 
-      print(_payload);
 
 
       final Map<String, String> _headers = {
@@ -69,39 +69,5 @@ class MpesaOperations{
     }
   }
 
-  Future<Map<String, dynamic>> fetchToken()async{
-    const String username = mpesaConsumerKey;
-    const String password = mpesaConsumerSecret;
-    final _base64E = base64Encode(utf8.encode('$username:$password'));
-    final String basicAuth = 'Basic $_base64E';
-
-    try{
-      final http.Response _res = await http.get(mpesaTokenUrl,headers: <String, String>{'authorization': basicAuth});
-      if(_res.statusCode == 200){
-        final _body = json.decode(_res.body);
-        return {
-          "status": 0,
-          "body": {
-            "token": _body['access_token'].toString()
-          }
-        };
-      } else {
-        return {
-          "status": 1,
-          "body": {
-            "message": json.decode(_res.body)
-          }
-        };
-      }
-    }catch (e){
-      return {
-        "status": 3,
-        "body": {
-          "message": "cannot reach endpoint"
-        }
-      };
-    }
-
-  }
 
 }

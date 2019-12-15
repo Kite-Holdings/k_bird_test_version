@@ -38,4 +38,19 @@ class FlutterwaveCardSerializer extends Serializable{
     callbackUrl = object['callbackUrl'].toString();
   }
 
+  @override
+  void read(Map<String, dynamic> object, {Iterable<String> ignore, Iterable<String> reject, Iterable<String> require}) {
+    Iterable<String> _reject;
+    try {
+      double.parse(object['amount'].toString());
+      _reject = reject;
+      if(double.parse(object['amount'].toString()) < 0){
+        _reject = ['amount'];
+      }
+    } catch (e) {
+      _reject = ['amount'];
+    }
+    super.read(object, ignore: ignore, reject: _reject, require: require);
+  }
+
 }

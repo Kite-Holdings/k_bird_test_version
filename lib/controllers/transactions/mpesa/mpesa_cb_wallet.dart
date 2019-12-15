@@ -88,7 +88,7 @@ class MpesaCbRequestController extends ResourceController {
     final StkProcessModel _stkProcessModel = StkProcessModel(
       requestId: _requestId, 
       processState: ProcessState.pending, 
-      checkoutRequestID: _responseBody['CheckoutRequestID'].toString());
+      checkoutRequestID: _responseBody['body']['CheckoutRequestID'].toString());
 
     await _stkProcessModel.save();
 

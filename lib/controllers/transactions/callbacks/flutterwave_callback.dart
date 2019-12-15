@@ -5,6 +5,7 @@ import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/flutterwave/flutterwave_response_model.dart';
 import 'package:kite_bird/models/requests_model.dart';
 import 'package:kite_bird/models/response_model.dart';
+import 'package:kite_bird/models/transaction/transaction_model.dart';
 import 'package:kite_bird/models/transaction/transaction_result_model.dart';
 import 'package:kite_bird/models/wallets/wallet_operations.dart';
 
@@ -52,6 +53,28 @@ class FlutterWaveResponseController  extends ResourceController{
       );
 
       await _responsesModel.save();
+      // Save transaction
+      final TransactionModel transactionModel = TransactionModel(
+        amount: double.parse(amount),
+        cost: 0,
+        recipientNo: walletNo,
+        senderNo: cardNo,
+        transactionType: TransactionType.cardToWallet,
+        state: TransactionState.failed
+      );
+      await transactionModel.save();
+    }
+    else{
+      // Save transaction
+      final TransactionModel transactionModel = TransactionModel(
+        amount: double.parse(amount),
+        cost: 0,
+        recipientNo: walletNo,
+        senderNo: cardNo,
+        transactionType: TransactionType.cardToWallet,
+        state: TransactionState.complete
+      );
+      await transactionModel.save();
     }
 
     

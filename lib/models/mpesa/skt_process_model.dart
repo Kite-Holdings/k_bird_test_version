@@ -1,4 +1,5 @@
 import 'package:kite_bird/models/model.dart';
+export 'package:kite_bird/models/model.dart' show where, modify, ObjectId;
 
 class StkProcessModel extends Model{
   StkProcessModel({
@@ -7,6 +8,7 @@ class StkProcessModel extends Model{
     this.requestId,
     this.checkoutRequestID
   }) : super(dbUrl: databaseUrl, collectionName: stkPushProcessesCollection){
+    timeInitiated = DateTime.now();
     super.document = asMap();
   }
 

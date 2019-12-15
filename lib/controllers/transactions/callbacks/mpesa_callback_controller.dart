@@ -9,7 +9,6 @@ import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/transaction/transaction_model.dart';
 import 'package:kite_bird/models/transaction/transaction_result_model.dart';
 import 'package:kite_bird/models/wallets/wallet_operations.dart';
-import 'package:pedantic/pedantic.dart';
 
 
 class MpesaStkCallbackController extends ResourceController{
@@ -82,9 +81,7 @@ class MpesaStkCallbackController extends ResourceController{
 void processMpesaResponse({bool success, Map<String, dynamic> body, String requestId, String recieptNo})async{
   final StkProcessModel _stkProcessModelP = StkProcessModel(requestId: requestId);
   final bool _isPending = await _stkProcessModelP.isPending();
-
-  String transactionId;
-
+  final ObjectId transactionId = ObjectId();
   final RequestsModel _requestsModel = RequestsModel();
 
 
@@ -95,29 +92,23 @@ void processMpesaResponse({bool success, Map<String, dynamic> body, String reque
   String phoneNo;
   double amount;
   String _url;
-  try{
-  walletAccountNo = _transactionMeta['metadata']['referenceNumber'].toString();
-  // referenceNumber = _transactionMeta['metadata']['referenceNumber'].toString();
-  transactionDesc = _transactionMeta['metadata']['transactionDesc'].toString();
-  phoneNo = _transactionMeta['metadata']['phoneNo'].toString();
-  amount = double.parse(_transactionMeta['metadata']['amount'].toString());
-  _url = _transactionMeta['metadata']['callbackUrl'].toString();
-  } catch (e){
-    walletAccountNo = _transactionMeta['referenceNumber'].toString();
-    // referenceNumber = _transactionMeta['referenceNumber'].toString();
-    transactionDesc = _transactionMeta['transactionDesc'].toString();
-    phoneNo = _transactionMeta['phoneNo'].toString();
-    amount = double.parse(_transactionMeta['amount'].toString());
-    _url = _transactionMeta['url'].toString();
-  }
+
+  walletAccountNo = _transactionMeta['body']['metadata']['referenceNumber'].toString();
+  // referenceNumber = _transactionMeta['body']['metadata']['referenceNumber'].toString();
+  transactionDesc = _transactionMeta['body']['metadata']['transactionDesc'].toString();
+  phoneNo = _transactionMeta['body']['metadata']['phoneNo'].toString();
+  amount = double.parse(_transactionMeta['body']['metadata']['amount'].toString());
+  _url = _transactionMeta['body']['metadata']['callBackUrl'].toString();
+  
 
   body['referenceNumber'] = walletAccountNo;
   // body['referenceNumber'] = referenceNumber;
   body['transactionDesc'] = transactionDesc;
   body['amount'] = amount;
 
+
+  
   if(success){
-    final ObjectId transactionId = ObjectId();
       body['_id'] = transactionId;
     final MpesaResponsesModel _mpesaResponsesModel = MpesaResponsesModel(body: body);
     await _mpesaResponsesModel.save();
@@ -136,7 +127,6 @@ void processMpesaResponse({bool success, Map<String, dynamic> body, String reque
 
   } else{
     if(body != null){
-      final ObjectId transactionId = ObjectId();
       body['_id'] = transactionId;
       final MpesaResponsesModel _mpesaResponsesModel = MpesaResponsesModel(body: body);
       await _mpesaResponsesModel.save();
@@ -163,7 +153,7 @@ void processMpesaResponse({bool success, Map<String, dynamic> body, String reque
   final TransactionResult _transactionResult = TransactionResult(
     resultStatus: success ? TransactionResultStatus.complete : TransactionResultStatus.failed,
     reqRef: requestId,
-    transactionId: transactionId.toString(),
+    transactionId: transactionId.toJson(),
     channel: TransactionChannel.mpesa,
     paymentRef: walletAccountNo,
     receiptRef: recieptNo.toString(), 
@@ -197,7 +187,7 @@ void processMpesaResponse({bool success, Map<String, dynamic> body, String reque
       status: ResponsesStatus.success
     );
 
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     } catch (e){
       print(e);
       final ResponsesModel _responsesModel = ResponsesModel(
@@ -211,7 +201,7 @@ void processMpesaResponse({bool success, Map<String, dynamic> body, String reque
       status: ResponsesStatus.success
     );
 
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     rethrow;
     }
   }

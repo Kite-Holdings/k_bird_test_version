@@ -14,6 +14,7 @@ class KiteBirdChannel extends ApplicationChannel {
     router
       .route("/")
       .linkFunction((request) async {
+        print(await request.body.decode());
         return Response.ok({"key": "value"});
       });
 
