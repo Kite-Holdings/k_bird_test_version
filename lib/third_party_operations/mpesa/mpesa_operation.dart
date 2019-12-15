@@ -12,7 +12,7 @@ class MpesaOperations{
     String phoneNo, 
     String amount, 
     String callBackUrl,
-    String referenceNumber,
+    String walletNo,
     String transactionDesc,
   })async{
 
@@ -43,7 +43,7 @@ class MpesaOperations{
         "PartyB": mpesaBusinesShortCode,
         "PhoneNumber": phoneNo,
         "CallBackURL": '$mpesaCallBackURL/cb/$requestId',
-        "AccountReference": referenceNumber,
+        "AccountReference": walletNo,
         "TransactionDesc": transactionDesc
       };
 

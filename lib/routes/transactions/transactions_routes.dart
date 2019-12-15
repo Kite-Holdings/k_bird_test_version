@@ -10,7 +10,7 @@ Router transactionsRoutes(Router router){
   const String _baseUrl = '/transactions';
 
   router
-    .route('$_baseUrl/mpesa/cb')
+    .route('$_baseUrl/mpesaToWallet')
     .link(()=> MpesaCbRequestController());
 
   // callback

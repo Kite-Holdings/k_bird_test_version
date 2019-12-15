@@ -87,22 +87,19 @@ void processMpesaResponse({bool success, Map<String, dynamic> body, String reque
 
   final Map<String, dynamic> _transactionMeta = await _requestsModel.findById(requestId);
   String walletAccountNo;
-  // String referenceNumber;
   String transactionDesc;
   String phoneNo;
   double amount;
   String _url;
 
-  walletAccountNo = _transactionMeta['body']['metadata']['referenceNumber'].toString();
-  // referenceNumber = _transactionMeta['body']['metadata']['referenceNumber'].toString();
+  walletAccountNo = _transactionMeta['body']['metadata']['walletNo'].toString();
   transactionDesc = _transactionMeta['body']['metadata']['transactionDesc'].toString();
   phoneNo = _transactionMeta['body']['metadata']['phoneNo'].toString();
   amount = double.parse(_transactionMeta['body']['metadata']['amount'].toString());
   _url = _transactionMeta['body']['metadata']['callBackUrl'].toString();
   
 
-  body['referenceNumber'] = walletAccountNo;
-  // body['referenceNumber'] = referenceNumber;
+  body['walletNo'] = walletAccountNo;
   body['transactionDesc'] = transactionDesc;
   body['amount'] = amount;
 

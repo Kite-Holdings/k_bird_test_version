@@ -4,7 +4,7 @@ class MpesaCbSerializer extends Serializable{
   String phoneNo; 
   String amount; 
   String callBackUrl;
-  String referenceNumber;
+  String walletNo;
   String transactionDesc;
   @override
   Map<String, dynamic> asMap() {
@@ -12,7 +12,7 @@ class MpesaCbSerializer extends Serializable{
       'phoneNo': phoneNo,
       'amount': amount,
       'callBackUrl': callBackUrl,
-      'referenceNumber': referenceNumber,
+      'walletNo': walletNo,
       'transactionDesc': transactionDesc,
     };
   }
@@ -46,7 +46,7 @@ class MpesaCbSerializer extends Serializable{
     phoneNo = object['phoneNo'].toString(); 
     amount = object['amount'].toString(); 
     callBackUrl = object['callBackUrl'].toString();
-    referenceNumber = object['referenceNumber'].toString();
+    walletNo = object['walletNo'].toString();
     transactionDesc = object['transactionDesc'].toString();
   }
   

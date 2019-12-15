@@ -17,7 +17,7 @@ class MpesaCbRequestController extends ResourceController {
   dynamic _responseBody;
 
   @Operation.post()
-  Future<Response> stk(@Bind.body(require: ['amount', 'phoneNo', 'callBackUrl', 'referenceNumber', 'transactionDesc']) MpesaCbSerializer mpesaCbSerializer)async{
+  Future<Response> stk(@Bind.body(require: ['amount', 'phoneNo', 'callBackUrl', 'walletNo', 'transactionDesc']) MpesaCbSerializer mpesaCbSerializer)async{
     // save request
     final MpesaRequest _mpesaRequest = MpesaRequest(
       account: null,
@@ -26,7 +26,7 @@ class MpesaCbRequestController extends ResourceController {
         'phoneNo': mpesaCbSerializer.phoneNo,
         'amount': mpesaCbSerializer.amount,
         'callBackUrl': mpesaCbSerializer.callBackUrl,
-        'referenceNumber': mpesaCbSerializer.referenceNumber,
+        'walletNo': mpesaCbSerializer.walletNo,
         'transactionDesc': mpesaCbSerializer.transactionDesc,
         'walletDeposit': true,
       }
@@ -39,7 +39,7 @@ class MpesaCbRequestController extends ResourceController {
       amount: mpesaCbSerializer.amount,
       callBackUrl: mpesaCbSerializer.callBackUrl,
       phoneNo: mpesaCbSerializer.phoneNo,
-      referenceNumber: mpesaCbSerializer.referenceNumber,
+      walletNo: mpesaCbSerializer.walletNo,
       requestId: _requestId,
       transactionDesc: mpesaCbSerializer.transactionDesc
     );

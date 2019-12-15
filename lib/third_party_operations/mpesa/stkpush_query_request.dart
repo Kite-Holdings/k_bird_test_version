@@ -40,7 +40,7 @@ class StkPushQueryRequest{
       'Authorization': 'Bearer $accessToken'
     };
 
-    final String url = mpesaStkPushQueryRequestUrl;
+    const String url = mpesaStkPushQueryRequestUrl;
     
     Map<String, dynamic> _message;
     try{
