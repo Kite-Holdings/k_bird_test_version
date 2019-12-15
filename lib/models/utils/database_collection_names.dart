@@ -8,6 +8,7 @@ const String registerPhoneverifivationCollection = 'registerPhoneverifivation';
 const String requestsCollection = 'requests';
 const String responsesCollection = 'responses';
 const String stkPushProcessesCollection = 'stkPushProcesses';
+const String stkQueryResponseCollection = 'stkQueryResponse';
 const String tokensCollection = 'tokens';
 const String transactionsCollection = 'transactions';
 const String transactionResultCollection = 'transactionResult';

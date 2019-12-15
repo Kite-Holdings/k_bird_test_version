@@ -1,6 +1,7 @@
 
 import 'package:kite_bird/controllers/transactions/callbacks/mpesa_callback_controller.dart';
 import 'package:kite_bird/models/mpesa/skt_process_model.dart';
+import 'package:kite_bird/models/mpesa/stk_query_response_model.dart';
 import 'package:kite_bird/third_party_operations/mpesa/stkpush_query_request.dart';
 
 Future<void> checkStkProcessStatus() async {
@@ -28,6 +29,9 @@ Future<void> checkStkProcessStatus() async {
         final StkPushQueryRequest _stkPushQueryRequest = StkPushQueryRequest(checkoutRequestID: checkoutRequestID);
 
         final Map<String, dynamic> _querRes = await _stkPushQueryRequest.process();
+        // save response
+        final StkQuerResponseModel _stkQuerResponseModel = StkQuerResponseModel(body: _querRes);
+        await _stkQuerResponseModel.save();
         // print('........${_querRes.toString()}..........${_body[i]['checkoutRequestID'].toString()}');
         if(_querRes['status'] != 101){
 
