@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:kite_bird/kite_bird.dart';
+import 'package:kite_bird/models/accounts/account_model.dart';
 import 'package:kite_bird/models/mpesa/skt_process_model.dart';
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/requests_managers/mpesa_request.dart';
@@ -9,6 +10,7 @@ import 'package:kite_bird/third_party_operations/mpesa/mpesa_operation.dart';
 import 'package:pedantic/pedantic.dart';
 
 class MpesaCbRequestController extends ResourceController {
+  final AccountModel accountModel = AccountModel();
   final MpesaOperations _mpesaOperations = MpesaOperations();
 
   String _requestId;
@@ -18,9 +20,14 @@ class MpesaCbRequestController extends ResourceController {
 
   @Operation.post()
   Future<Response> stk(@Bind.body(require: ['amount', 'phoneNo', 'callBackUrl', 'walletNo', 'transactionDesc']) MpesaCbSerializer mpesaCbSerializer)async{
+    final Map<String, dynamic> _dbResAcc =await accountModel.findById(request.authorization.clientID, fields: ['phoneNo']);
+    String _phoneNo;
+    if(_dbResAcc['status'] == 0){
+      _phoneNo  = _dbResAcc['body']['phoneNo'].toString();
+    }
     // save request
     final MpesaRequest _mpesaRequest = MpesaRequest(
-      account: null,
+      account: _phoneNo,
       mpesaRequestsType: MpesaRequestsType.stkPush,
       metadata: {
         'phoneNo': mpesaCbSerializer.phoneNo,

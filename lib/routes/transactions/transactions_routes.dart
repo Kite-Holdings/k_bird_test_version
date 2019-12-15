@@ -11,6 +11,7 @@ Router transactionsRoutes(Router router){
 
   router
     .route('$_baseUrl/mpesaToWallet')
+    .link(()=> Authorizer.bearer(AccountBearerAouthVerifier()))
     .link(()=> MpesaCbRequestController());
 
   // callback
