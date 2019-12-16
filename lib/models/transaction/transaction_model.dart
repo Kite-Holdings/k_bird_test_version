@@ -11,8 +11,12 @@ class TransactionModel extends Model{
     this.state = TransactionState.processing
   }): super(dbUrl: databaseUrl, collectionName: transactionsCollection){
     id = ObjectId();
-    total = cost + amount;
     timeStamp = DateTime.now().toString();
+    try{
+      total = cost + amount;
+    } catch (e){
+      total = 0;
+    }
 
     document = asMap();
   }
