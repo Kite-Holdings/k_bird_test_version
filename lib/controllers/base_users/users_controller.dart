@@ -101,10 +101,10 @@ class UserController extends ResourceController{
   @Operation.post()
   Future<Response> createUser(@Bind.body(require: ['email', 'password', 'role']) UsersSerializer usersSerializer)async{
     String _email;
-    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
-    if(_dbResUser['status'] == 0){
-      _email  = _dbResUser['body']['email'].toString();
-    }
+    // final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
+    // if(_dbResUser['status'] == 0){
+    //   _email  = _dbResUser['body']['email'].toString();
+    // }
     // Save request 
     final BaseUserRequests _baseUserRequests = BaseUserRequests(
       account: _email,
