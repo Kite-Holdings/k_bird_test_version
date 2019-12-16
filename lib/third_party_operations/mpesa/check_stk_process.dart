@@ -83,6 +83,7 @@ Future<void> checkStkProcessStatus() async {
 
   } catch (e){
     print(e);
+    print(_body);
   }
   }
 }
