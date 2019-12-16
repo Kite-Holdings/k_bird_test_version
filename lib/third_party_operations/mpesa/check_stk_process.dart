@@ -14,7 +14,8 @@ Future<void> checkStkProcessStatus() async {
 
 
   for(int i = 0; i < int.parse(_body.length.toString()); i++){
-    final DateTime _processDatetime = DateTime.parse(_body[i]['timeInitiated'].toString().padLeft(2, "0")).toLocal();
+    try{
+    final DateTime _processDatetime = DateTime.parse(_body[i]['timeInitiated'].toString()).toLocal();
     final DateTime _now = DateTime.now();
     final int _nowInt = _now.millisecondsSinceEpoch;
     final int _pastInt = _processDatetime.millisecondsSinceEpoch;
@@ -80,5 +81,8 @@ Future<void> checkStkProcessStatus() async {
       }
     }
 
+  } catch (e){
+    print(e);
+  }
   }
 }
