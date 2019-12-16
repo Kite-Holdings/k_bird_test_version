@@ -1,12 +1,14 @@
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/cooprate_model.dart';
 import 'package:kite_bird/models/response_model.dart';
+import 'package:kite_bird/models/user_models.dart';
 import 'package:kite_bird/requests_managers/cooperate_request.dart';
 import 'package:kite_bird/serializers/cooprate/cooprate_serializer.dart';
 import 'package:pedantic/pedantic.dart';
 
 class CooprateController extends ResourceController{
   CooprateModel cooprateModel = CooprateModel();
+  final UserModel userModel = UserModel();
 
   String _requestId;
   final ResposeType _responseType = ResposeType.baseUser;
@@ -18,9 +20,9 @@ class CooprateController extends ResourceController{
   @Operation.get()
   Future<Response> getAll()async{
     String _name;
-    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
     if(_dbResUser['status'] == 0){
-      _name  = _dbResUser['body']['name'].toString();
+      _name  = _dbResUser['body']['email'].toString();
     }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(
@@ -51,9 +53,9 @@ class CooprateController extends ResourceController{
   @Operation.get('cooperateId')
   Future<Response> getOne(@Bind.path("cooperateId") String cooperateId)async{
     String _name;
-    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
     if(_dbResUser['status'] == 0){
-      _name  = _dbResUser['body']['name'].toString();
+      _name  = _dbResUser['body']['email'].toString();
     }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(
@@ -84,9 +86,9 @@ class CooprateController extends ResourceController{
   @Operation.post()
   Future<Response> registerCompany(@Bind.body(require: ['name']) CoopratesSerializer coopratesSerializer)async{
     String _name;
-    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
     if(_dbResUser['status'] == 0){
-      _name  = _dbResUser['body']['name'].toString();
+      _name  = _dbResUser['body']['email'].toString();
     }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(
@@ -122,9 +124,9 @@ class CooprateController extends ResourceController{
   @Operation.delete('cooperateId')
   Future<Response> delete(@Bind.path("cooperateId") String cooperateId)async{
     String _name;
-    final Map<String, dynamic> _dbResUser = await cooprateModel.findById(request.authorization.clientID, fields: ['name']);
+    final Map<String, dynamic> _dbResUser = await userModel.findById(request.authorization.clientID, fields: ['email']);
     if(_dbResUser['status'] == 0){
-      _name  = _dbResUser['body']['name'].toString();
+      _name  = _dbResUser['body']['email'].toString();
     }
     // Save Request
     final CooperateRequest _cooperateRequest = CooperateRequest(

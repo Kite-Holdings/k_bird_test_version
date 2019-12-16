@@ -1,3 +1,5 @@
-const String consumerKeyTwilio = 'AC11dedec95adfb30af91d7e425975b823';
-const String consumerSecretTwilio = '912dbee7a4dce11f14fc79c86b455bc4';
-const String numberTwilio = '+12082623971';
+const String consumerKeyTwilio = 'AC3a3f771507cb254e76d05ba34431803d';
+const String consumerSecretTwilio = 'e0dc48f9e499dcda384bf667a03e00d9';
+const String numberTwilio = '+12565768181';
+
+const String twilioUrl = 'https://api.twilio.com/2010-04-01/Accounts/$consumerKeyTwilio/Messages.json';
