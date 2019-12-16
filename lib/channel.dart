@@ -1,3 +1,4 @@
+import 'package:kite_bird/html_template/card_success.dart';
 import 'package:kite_bird/routes/routers_export.dart';
 
 import 'kite_bird.dart';
@@ -17,6 +18,14 @@ class KiteBirdChannel extends ApplicationChannel {
         print(await request.body.decode());
         return Response.ok({"key": "value"});
       });
+    
+    router
+      .route("/cardSuccess")
+      .linkFunction((request)async{
+        final response = Response.ok(htmlTemplate)
+          ..contentType = ContentType.html;
+      return response;
+    });
 
     // trial router
     trialRoute(router);
