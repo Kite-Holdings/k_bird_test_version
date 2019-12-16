@@ -4,13 +4,14 @@ import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/accounts/account_model.dart';
 import 'package:kite_bird/models/mpesa/skt_process_model.dart';
 import 'package:kite_bird/models/response_model.dart';
+import 'package:kite_bird/models/wallets/wallet_model.dart';
 import 'package:kite_bird/requests_managers/mpesa_request.dart';
 import 'package:kite_bird/serializers/mpesa/mpesa_cb_serializer.dart';
 import 'package:kite_bird/third_party_operations/mpesa/mpesa_operation.dart';
-import 'package:pedantic/pedantic.dart';
 
 class MpesaCbRequestController extends ResourceController {
   final AccountModel accountModel = AccountModel();
+  final WalletModel walletModel = WalletModel();
   final MpesaOperations _mpesaOperations = MpesaOperations();
 
   String _requestId;
@@ -40,46 +41,62 @@ class MpesaCbRequestController extends ResourceController {
     );
     _mpesaRequest.normalRequest();
     _requestId = _mpesaRequest.requestId();
+    // check if recipient exist
+    final bool walletExist =await walletModel.exists(where.eq('walletNo', mpesaCbSerializer.walletNo));
+    if(!walletExist){
+      _responseStatus = ResponsesStatus.failed;
+      _responseBody = {"body": "Recipient Account does not exist"};
+    } else{
 
-    // send stkpush
-    final Map<String, dynamic> _mpesaRes =await _mpesaOperations.cb(
-      amount: mpesaCbSerializer.amount,
-      callBackUrl: mpesaCbSerializer.callBackUrl,
-      phoneNo: mpesaCbSerializer.phoneNo,
-      walletNo: mpesaCbSerializer.walletNo,
-      requestId: _requestId,
-      transactionDesc: mpesaCbSerializer.transactionDesc
-    );
+      // send stkpush
+      final Map<String, dynamic> _mpesaRes =await _mpesaOperations.cb(
+        amount: mpesaCbSerializer.amount,
+        callBackUrl: mpesaCbSerializer.callBackUrl,
+        phoneNo: mpesaCbSerializer.phoneNo,
+        walletNo: mpesaCbSerializer.walletNo,
+        requestId: _requestId,
+        transactionDesc: mpesaCbSerializer.transactionDesc
+      );
 
-    // compute response
-    if(_mpesaRes['status'] != 0){
-      _responseStatus = ResponsesStatus.error;
-      _responseBody = {'body': 'An error occured!'};
-    } else {
-      dynamic _mpesaResponseBody;
-      final int _mpesaResponseStatusCode = int.parse(_mpesaRes['body'].statusCode.toString());
+      // compute response
+      if(_mpesaRes['status'] != 0){
+        _responseStatus = ResponsesStatus.error;
+        _responseBody = {'body': 'An error occured!'};
+      } else {
+        dynamic _mpesaResponseBody;
+        final int _mpesaResponseStatusCode = int.parse(_mpesaRes['body'].statusCode.toString());
+        
+        try {
+          _mpesaResponseBody = json.decode(_mpesaRes['body'].body.toString());
+          _mpesaResponseBody['requestId'] = _requestId;
+        } catch (e) {
+          _mpesaResponseBody = _mpesaRes['body'].body; 
+        }
+        _responseBody = {'body': _mpesaResponseBody};
+
+        switch (_mpesaResponseStatusCode) {
+          case 200:
+            _responseStatus = ResponsesStatus.success;
+            break;
+          case 400:
+            _responseStatus = ResponsesStatus.failed;
+            break;
+          case 500:
+            _responseStatus = ResponsesStatus.warning;
+            break;
+          default:
+          _responseStatus = ResponsesStatus.notDefined;
+        }
+      }
       
-      try {
-        _mpesaResponseBody = json.decode(_mpesaRes['body'].body.toString());
-        _mpesaResponseBody['requestId'] = _requestId;
-      } catch (e) {
-        _mpesaResponseBody = _mpesaRes['body'].body; 
-      }
-      _responseBody = {'body': _mpesaResponseBody};
 
-      switch (_mpesaResponseStatusCode) {
-        case 200:
-          _responseStatus = ResponsesStatus.success;
-          break;
-        case 400:
-          _responseStatus = ResponsesStatus.failed;
-          break;
-        case 500:
-          _responseStatus = ResponsesStatus.warning;
-          break;
-        default:
-        _responseStatus = ResponsesStatus.notDefined;
-      }
+      // Stkpush Process
+      final StkProcessModel _stkProcessModel = StkProcessModel(
+        requestId: _requestId, 
+        processState: ProcessState.pending, 
+        checkoutRequestID: _responseBody['body']['CheckoutRequestID'].toString());
+
+      await _stkProcessModel.save();
     }
     // save response
     final ResponsesModel _responsesModel = ResponsesModel(
@@ -89,15 +106,7 @@ class MpesaCbRequestController extends ResourceController {
       status: _responseStatus
     );
 
-    unawaited(_responsesModel.save());
-
-    // Stkpush Process
-    final StkProcessModel _stkProcessModel = StkProcessModel(
-      requestId: _requestId, 
-      processState: ProcessState.pending, 
-      checkoutRequestID: _responseBody['body']['CheckoutRequestID'].toString());
-
-    await _stkProcessModel.save();
+    await _responsesModel.save();
 
     return _responsesModel.sendResponse();
 

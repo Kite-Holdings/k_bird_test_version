@@ -1,10 +1,12 @@
 import 'package:kite_bird/kite_bird.dart';
+import 'package:kite_bird/models/accounts/account_model.dart';
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/token_model.dart';
 import 'package:kite_bird/requests_managers/account_request.dart';
 import 'package:pedantic/pedantic.dart';
 
 class AccountLoginController extends ResourceController{
+  final AccountModel accountModel = AccountModel();
   static int duration = 300; // 300 seconds for 5 mins
   final int _validTill = (DateTime.now().millisecondsSinceEpoch/1000 + duration).floor();
   String _requestId;
@@ -15,12 +17,17 @@ class AccountLoginController extends ResourceController{
   @Operation.get()
   Future<Response> getOtpToken()async{
     // Save request 
+    final Map<String, dynamic> _dbResAcc =await accountModel.findById(request.authorization.clientID, fields: ['phoneNo']);
+    String _phoneNo;
+    if(_dbResAcc['status'] == 0){
+      _phoneNo  = _dbResAcc['body']['phoneNo'].toString();
+    }
     final AccountRequest _accountRequest = AccountRequest(
-      account: request.authorization != null ? request.authorization.clientID : null,
+      account: _phoneNo,
       accountRequestsType: AccountRequestsType.login,
       metadata: {
         "function": 'Account Login',
-        "accountId": request.authorization.clientID
+        "accountId": _phoneNo
       },
     );
     _accountRequest.normalRequest();

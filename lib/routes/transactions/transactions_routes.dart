@@ -4,6 +4,7 @@ import 'package:kite_bird/controllers/transactions/callbacks/mpesa_callback_cont
 import 'package:kite_bird/controllers/transactions/flutterwave/flutterwave_card.dart';
 import 'package:kite_bird/controllers/transactions/kite_wallet/wallet_to_wallet.dart';
 import 'package:kite_bird/controllers/transactions/mpesa/mpesa_cb_wallet.dart';
+import 'package:kite_bird/controllers/transactions/transactions/transaction_controller.dart';
 import 'package:kite_bird/kite_bird.dart';
 
 Router transactionsRoutes(Router router){
@@ -35,6 +36,18 @@ Router transactionsRoutes(Router router){
   router
     .route('/flutterWaveResponse')
     .link(()=> FlutterWaveResponseController());
+
+  // transactions
+  router
+    .route('/$_baseUrl')
+    .link(()=> Authorizer.bearer(AccountBearerAouthVerifier()))
+    .link(() => TransactionsController());
+
+  // wallet activities
+  router
+    .route('/$_baseUrl/walletActivities')
+    .link(()=> Authorizer.bearer(AccountBearerAouthVerifier()))
+    .link(() => WalletActivitiesController());
 
 
   return router;

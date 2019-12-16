@@ -132,6 +132,9 @@ class ResponsesModel extends Model{
       case ResposeType.token:
         return 'token';
         break;
+      case ResposeType.transactions:
+        return 'transactions';
+        break;
       default:
         return 'notDefined';
     }
@@ -160,6 +163,9 @@ class ResponsesModel extends Model{
       case 'stkQuery':
         return ResposeType.stkQuery;
         break;
+      case 'transactions':
+        return ResposeType.transactions;
+        break;
       case 'token':
         return ResposeType.token;
         break;
@@ -183,6 +189,7 @@ enum ResposeType{
   card,
   mpesaStkPush,
   stkQuery,
+  transactions,
   token,
   notDefined
 }

@@ -113,7 +113,8 @@ void processMpesaResponse({bool success, Map<String, dynamic> body, String reque
     final WalletOperations _walletOperations = WalletOperations(
       amount: amount,
       sender: phoneNo,
-      recipient: walletAccountNo
+      recipient: walletAccountNo,
+      transactionType: TransactionType.mpesaCb,
     );
     await _walletOperations.deposit();
 

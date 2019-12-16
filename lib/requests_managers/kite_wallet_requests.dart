@@ -23,6 +23,14 @@ class KiteWalletRequests{
         _requestMethod = RequestMethod.postMethod;
         _url = '/transactions/walletToWallet';
         break;
+      case KiteWalletRequestsType.walletActivities:
+        _requestMethod = RequestMethod.getmethod;
+        _url = '/transactions/walletActivities';
+        break;
+      case KiteWalletRequestsType.transactions:
+        _requestMethod = RequestMethod.getmethod;
+        _url = '/transactions';
+        break;
         default:
     }
 
@@ -43,5 +51,7 @@ class KiteWalletRequests{
 enum KiteWalletRequestsType{
   balance,
   walletToWallet,
+  walletActivities,
+  transactions,
   
 }

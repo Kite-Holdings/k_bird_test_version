@@ -13,7 +13,7 @@ class WalletToWalletController extends ResourceController{
   final WalletModel walletModel = WalletModel();
 
   String _requestId;
-  final ResposeType _responseType = ResposeType.mpesaStkPush;
+  final ResposeType _responseType = ResposeType.transactions;
   ResponsesStatus _responseStatus;
   dynamic _responseBody;
 

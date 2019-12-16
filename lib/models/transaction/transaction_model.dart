@@ -1,4 +1,5 @@
 import 'package:kite_bird/models/model.dart';
+export 'package:kite_bird/models/model.dart' show where, ObjectId;
 
 class TransactionModel extends Model{
   TransactionModel({

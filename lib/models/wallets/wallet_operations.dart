@@ -27,7 +27,7 @@ class WalletOperations{
     if(_dbres['status'] == 0){
       if(_dbres['body'] != null){
         final double _balance = double.parse(_dbres['body']['balance'].toString());
-        final WalletActivities _walletActivities = WalletActivities(
+        final WalletActivitiesModel _walletActivities = WalletActivitiesModel(
           amount: amount,
           balance: _balance,
           operation: WalletOperationType.recieve,
@@ -55,7 +55,7 @@ class WalletOperations{
     if(_dbres['status'] == 0){
       if(_dbres['body'] != null){
         final double _balance = double.parse(_dbres['body']['balance'].toString());
-        final WalletActivities _walletActivities = WalletActivities(
+        final WalletActivitiesModel _walletActivities = WalletActivitiesModel(
           amount: amount,
           balance: _balance,
           operation: WalletOperationType.send,
@@ -77,8 +77,8 @@ class WalletOperations{
 
 }
 
-class WalletActivities extends Model{
-  WalletActivities({
+class WalletActivitiesModel extends Model{
+  WalletActivitiesModel({
     this.amount,
     this.balance,
     this.operation,
@@ -108,7 +108,7 @@ class WalletActivities extends Model{
     'walletNo': walletNo,
   };
 
-  WalletActivities fromMap(Map<String, dynamic> object)=> WalletActivities(
+  WalletActivitiesModel fromMap(Map<String, dynamic> object)=> WalletActivitiesModel(
     amount: double.parse(object['amount'].toString()),
     balance: double.parse(object['balance'].toString()),
     operation: _walletOperationTypeFromString(object['operation'].toString()),
