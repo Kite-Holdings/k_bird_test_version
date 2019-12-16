@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:http/http.dart' as http;
-import 'package:kite_bird/configs/twilio/twilio_config.dart';
+import 'package:kite_bird/configs/infobip/infobip_configs.dart';
+// import 'package:kite_bird/configs/twilio/twilio_config.dart';
 
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/accounts/register_account_verification_model.dart';
@@ -54,7 +55,8 @@ class RegisterAccountVerificationController extends ResourceController{
 
     // send otp
     final http.Response _otpRes = await sendOtp('+$_phoneNo', _otp.toString());
-    if(_otpRes.statusCode != 201){
+    if(_otpRes.statusCode != 200){
+    // if(_otpRes.statusCode != 201){ // twilio
       print(_otpRes.body);
       _responseStatus = ResponsesStatus.error;
       _responseBody = {"body": "an error occoured"};
@@ -71,17 +73,28 @@ class RegisterAccountVerificationController extends ResourceController{
   }
 
   Future<http.Response> sendOtp(String to, String otp)async{
-    const String username = consumerKeyTwilio;
-    const String password = consumerSecretTwilio;
+    const String username = infobipUsername;
+    const String password = infobipPassword;
     final _base64E = base64Encode(utf8.encode('$username:$password'));
     final String basicAuth = 'Basic $_base64E';
 
-    const String _url = twilioUrl;
+    const String _url = infobipSmsUrl ;
     final Map<String, String> _body = {
-      "Body": "To verify your Kite Wallet account enter the code: $otp",
-      "From": numberTwilio,
-      "To": to,
+      "text": "To verify your Kite Wallet account enter the code: $otp",
+      "from": infobipPhoneNo,
+      "to": to,
     };
+    // const String username = consumerKeyTwilio;
+  //   const String password = consumerSecretTwilio;
+  //   final _base64E = base64Encode(utf8.encode('$username:$password'));
+  //   final String basicAuth = 'Basic $_base64E';
+
+  //   const String _url = twilioUrl;
+  //   final Map<String, String> _body = {
+  //     "Body": "To verify your Kite Wallet account enter the code: $otp",
+  //     "From": numberTwilio,
+  //     "To": to,
+  //   };
 
 
     final http.Response _res =await http.post(_url, body: _body, headers: <String, String>{'authorization': basicAuth});
