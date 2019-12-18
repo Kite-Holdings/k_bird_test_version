@@ -38,8 +38,14 @@ class AccountController extends ResourceController{
       _responseBody = {"body": _account};
       final Map<String, dynamic> _dbReswallet = await walletModel.findBySelector(
         where.eq('ownerId', _account['_id'].toJson()), exclude: ['cooprateCode', 'ownerId', 'walletType']);
-        final Map<String, dynamic> _receivedMap = await walletActivitiesModel.findBySelector(where.eq("operation", "receive"), fields: ['amount']);
-        final Map<String, dynamic> _sentMap = await walletActivitiesModel.findBySelector(where.eq("operation", "send"));
+        String _walletNo;
+        try {
+          _walletNo = _dbReswallet['body'][0]['walletNo'].toString();
+        } catch (e) {
+          print(e);
+        }
+        final Map<String, dynamic> _receivedMap = await walletActivitiesModel.findBySelector(where.eq("walletNo", _walletNo).and(where.eq("operation", "receive")), fields: ['amount']);
+        final Map<String, dynamic> _sentMap = await walletActivitiesModel.findBySelector(where.eq("walletNo", _walletNo).and(where.eq("operation", "send")), fields: ['amount']);
         
         double _received = 0;
         double _sent = 0;
