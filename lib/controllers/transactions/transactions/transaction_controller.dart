@@ -42,7 +42,7 @@ class TransactionsController extends ResourceController{
     // fetch transactions
     final Map<String, dynamic> _dbRes = await transactionModel.findBySelector(
       where.eq('recipientNo', _walletNo)
-      .or(where.eq('senderNo', _walletNo))
+      .or(where.eq('senderNo', _walletNo)).sortBy('_id', descending: true)
     );
 
     if(_dbRes['status'] == 0){
@@ -106,7 +106,9 @@ class WalletActivitiesController extends ResourceController{
     }
 
     // fetch transactions
-    final Map<String, dynamic> _dbRes = await walletActivitiesModel.findBySelector(where.eq('walletNo', _walletNo));
+    final Map<String, dynamic> _dbRes = await walletActivitiesModel.findBySelector(
+      where.eq('walletNo', _walletNo).sortBy('_id', descending: true)
+      );
 
     if(_dbRes['status'] == 0){
       _responseStatus = ResponsesStatus.success;

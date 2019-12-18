@@ -1,4 +1,4 @@
-var htmlTemplate  = '''
+String htmlTemplate  = '''
 <!DOCTYPE html>
 <html>
 <head>

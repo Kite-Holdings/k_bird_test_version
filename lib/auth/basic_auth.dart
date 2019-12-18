@@ -137,9 +137,15 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
     Authorization _authorization;
     final List<String> _aouthDetails = authorizationData.toString().split(":");
     final int _nowMili = (DateTime.now().millisecondsSinceEpoch/1000).floor();
+    int _otp;
+    try {
+      _otp = int.parse(_aouthDetails[1]);
+    } catch (e) {
+      _responseBody = {'body': 'invalid otp'};
+    }
     final Map<String, dynamic> _dbRes = await _registerAccountVerificationModel.findBySelector(
       where.eq('phoneNo', _aouthDetails[0])
-        .eq('otp', int.parse(_aouthDetails[1]))
+        .eq('otp', _otp)
         .gte('expireTime', _nowMili)
         );
     
