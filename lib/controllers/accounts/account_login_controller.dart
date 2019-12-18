@@ -3,7 +3,6 @@ import 'package:kite_bird/models/accounts/account_model.dart';
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/token_model.dart';
 import 'package:kite_bird/requests_managers/account_request.dart';
-import 'package:pedantic/pedantic.dart';
 
 class AccountLoginController extends ResourceController{
   final AccountModel accountModel = AccountModel();
@@ -57,7 +56,7 @@ class AccountLoginController extends ResourceController{
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse(_responseBody);
 
   }

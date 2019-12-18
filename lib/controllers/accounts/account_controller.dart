@@ -4,7 +4,6 @@ import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/wallets/wallet_model.dart';
 import 'package:kite_bird/models/wallets/wallet_operations.dart';
 import 'package:kite_bird/requests_managers/account_request.dart';
-import 'package:pedantic/pedantic.dart';
 
 class AccountController extends ResourceController{
   final AccountModel accountModel = AccountModel();
@@ -83,7 +82,7 @@ class AccountController extends ResourceController{
 
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse();
   }
 }

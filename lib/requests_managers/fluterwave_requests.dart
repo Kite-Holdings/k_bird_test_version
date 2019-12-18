@@ -1,5 +1,4 @@
 import 'package:kite_bird/models/requests_model.dart';
-import 'package:pedantic/pedantic.dart';
 
 class FlutterwaveRequests{
   FlutterwaveRequests({this.account, this.metadata});
@@ -21,7 +20,7 @@ class FlutterwaveRequests{
       account: account,
       metadata: metadata
     );
-    unawaited(_requestsModel.save());
+    await _requestsModel.save();
   }
 
 

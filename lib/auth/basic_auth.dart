@@ -7,7 +7,6 @@ import 'package:kite_bird/models/user_models.dart';
 import 'package:kite_bird/requests_managers/account_request.dart';
 import 'package:kite_bird/requests_managers/base_user_resquests.dart';
 import 'package:kite_bird/requests_managers/cooperate_request.dart';
-import 'package:pedantic/pedantic.dart';
 
 class CooprateBasicAouthVerifier extends AuthValidator {
   String _requestId;
@@ -60,7 +59,7 @@ class CooprateBasicAouthVerifier extends AuthValidator {
       responseBody: _responseBody,
       status: _responseStatus
     );
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
 
     return _authorization;
   }
@@ -118,7 +117,7 @@ class BaseUserBasicAouthVerifier extends AuthValidator {
       responseBody: _responseBody,
       status: _responseStatus
     );
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
 
     return _authorization;
   }
@@ -179,7 +178,7 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
       responseBody: _responseBody,
       status: _responseStatus
     );
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     
     return _authorization;
   }
@@ -236,7 +235,7 @@ class AccountLoginAouthVerifier extends AuthValidator {
       responseBody: _responseBody,
       status: _responseStatus
     );
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
 
 
 

@@ -1,5 +1,4 @@
 import 'package:kite_bird/models/requests_model.dart';
-import 'package:pedantic/pedantic.dart';
 
 class BaseUserRequests {
   BaseUserRequests({this.account, this.metadata, this.baseUserRequestsType});
@@ -48,7 +47,7 @@ class BaseUserRequests {
       account: account,
       metadata: metadata
     );
-    unawaited(_requestsModel.save());
+    await _requestsModel.save();
   }
 
 }

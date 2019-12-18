@@ -4,7 +4,6 @@ import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/user_models.dart';
 import 'package:kite_bird/requests_managers/cooperate_request.dart';
 import 'package:kite_bird/serializers/cooprate/cooprate_serializer.dart';
-import 'package:pedantic/pedantic.dart';
 
 class CooprateController extends ResourceController{
   CooprateModel cooprateModel = CooprateModel();
@@ -46,7 +45,7 @@ class CooprateController extends ResourceController{
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse(_responseBody);
   }
 
@@ -79,7 +78,7 @@ class CooprateController extends ResourceController{
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse();
   }
 
@@ -117,7 +116,7 @@ class CooprateController extends ResourceController{
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse();
   }
 
@@ -149,7 +148,7 @@ class CooprateController extends ResourceController{
       }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse();
   }
 
@@ -195,7 +194,7 @@ class CooprateFindByController extends ResourceController{
       }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse();
   }
   @Operation.get('cooprateCode')
@@ -227,7 +226,7 @@ class CooprateFindByController extends ResourceController{
       }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse();
   }
 }

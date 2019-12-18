@@ -4,7 +4,6 @@ import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/user_models.dart';
 import 'package:kite_bird/requests_managers/base_user_resquests.dart';
 import 'package:kite_bird/serializers/base_users/users_serializer.dart';
-import 'package:pedantic/pedantic.dart';
 
 class UserController extends ResourceController{
   UserModel userModel = UserModel();
@@ -55,7 +54,7 @@ class UserController extends ResourceController{
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse(_responseBody);
     }
 
@@ -94,7 +93,7 @@ class UserController extends ResourceController{
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse(_responseBody);
   }
 
@@ -141,7 +140,7 @@ class UserController extends ResourceController{
 
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse(_responseBody);
 
   }
@@ -176,7 +175,7 @@ class UserController extends ResourceController{
       }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse(_responseBody);
   }
 
@@ -222,7 +221,7 @@ class UserController extends ResourceController{
       }
       // Save response
       final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-      unawaited(_responsesModel.save());
+      await _responsesModel.save();
       return _responsesModel.sendResponse(_responseBody);
   }
 

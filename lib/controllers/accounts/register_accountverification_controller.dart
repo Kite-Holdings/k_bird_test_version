@@ -10,7 +10,6 @@ import 'package:kite_bird/models/accounts/register_account_verification_model.da
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/requests_managers/account_request.dart';
 import 'package:kite_bird/serializers/accounts/phoneno_verification_serializer.dart';
-import 'package:pedantic/pedantic.dart';
 
 class RegisterAccountVerificationController extends ResourceController{
   String _requestId;
@@ -51,7 +50,7 @@ class RegisterAccountVerificationController extends ResourceController{
       otp: _otp,
       cooprateId: request.authorization.clientID
       );
-    unawaited(_registerAccountVerificationModel.save());
+    await _registerAccountVerificationModel.save();
 
     // send otp
     final http.Response _otpRes = await sendOtp('+$_phoneNo', _otp.toString());
@@ -68,7 +67,7 @@ class RegisterAccountVerificationController extends ResourceController{
 
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody, status: _responseStatus, requestId: _requestId, responseType: _responseType);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse();
   }
 

@@ -4,7 +4,6 @@ import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/models/token_model.dart';
 import 'package:kite_bird/requests_managers/base_user_resquests.dart';
 import 'package:kite_bird/requests_managers/cooperate_request.dart';
-import 'package:pedantic/pedantic.dart';
 
 class CooprateTokenController extends ResourceController{
   final CooprateModel cooprateModel = CooprateModel();
@@ -61,7 +60,7 @@ class CooprateTokenController extends ResourceController{
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBodyModel != null ? _responseBodyModel : _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse(_responseBody);
     
   }  
@@ -118,7 +117,7 @@ class BaseUserTokenController extends ResourceController{
     }
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(requestId: _requestId, responseType: _responseType, status: _responseStatus, responseBody: _responseBody);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse(_responseBody);
   }
     

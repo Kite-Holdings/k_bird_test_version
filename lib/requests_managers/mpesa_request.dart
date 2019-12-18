@@ -1,5 +1,4 @@
 import 'package:kite_bird/models/requests_model.dart';
-import 'package:pedantic/pedantic.dart';
 
 class MpesaRequest{
   MpesaRequest({this.account, this.metadata, this.mpesaRequestsType});
@@ -34,7 +33,7 @@ class MpesaRequest{
       account: account,
       metadata: metadata
     );
-    unawaited(_requestsModel.save());
+    await _requestsModel.save();
   }
 
 

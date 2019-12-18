@@ -5,7 +5,6 @@ import 'package:kite_bird/models/cooprate_model.dart';
 import 'package:kite_bird/models/response_model.dart';
 import 'package:kite_bird/requests_managers/account_request.dart';
 import 'package:kite_bird/serializers/accounts/account_serializer.dart';
-import 'package:pedantic/pedantic.dart';
 
 class RegisterConsumerAccount extends ResourceController{
   String _requestId;
@@ -65,7 +64,7 @@ class RegisterConsumerAccount extends ResourceController{
 
     // Save response
     final ResponsesModel _responsesModel = ResponsesModel(responseBody: _responseBody, status: _responseStatus, requestId: _requestId, responseType: _responseType);
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
     return _responsesModel.sendResponse();
 
 

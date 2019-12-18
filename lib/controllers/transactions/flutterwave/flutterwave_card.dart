@@ -7,7 +7,6 @@ import 'package:kite_bird/models/wallets/wallet_model.dart';
 import 'package:kite_bird/requests_managers/fluterwave_requests.dart';
 import 'package:kite_bird/serializers/flutterwave/flutterwave_card_serializer.dart';
 import 'package:kite_bird/third_party_operations/flutterwave/flutterwave_operations.dart';
-import 'package:pedantic/pedantic.dart';
 
 class FlutterWaveCardTransactionController extends ResourceController{
   final AccountModel accountModel = AccountModel();
@@ -102,7 +101,7 @@ class FlutterWaveCardTransactionController extends ResourceController{
       status: _responseStatus
     );
 
-    unawaited(_responsesModel.save());
+    await _responsesModel.save();
 
     return _responsesModel.sendResponse();
 
