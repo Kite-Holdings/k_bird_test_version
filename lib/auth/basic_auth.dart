@@ -19,13 +19,14 @@ class CooprateBasicAouthVerifier extends AuthValidator {
     Authorization _authorization;
     final List<String> _aouthDetails = authorizationData.toString().split(":");
     final CooprateModel cooprateModel = CooprateModel();
+    bool _saveRequestResponse = true;
     final Map<String, dynamic> _companies = await cooprateModel.findBySelector(where.eq('consumerKey', _aouthDetails[0]));
     final CooperateRequest _cooperateRequest = CooperateRequest(
       account: _aouthDetails[0],
       cooperateRequestsType: CooperateRequestsType.token,
       metadata: _aouthDetails
     );
-    _cooperateRequest.normalRequest();
+    
     _requestId = _cooperateRequest.requestId();
     
     if(_companies['status'] != 0){
@@ -44,6 +45,7 @@ class CooprateBasicAouthVerifier extends AuthValidator {
       if (_company['secretKey'].toString() == _aouthDetails[1].toString()) {
         _id = _company['_id'].toString().split('\"')[1];
         _authorization = Authorization(_id, 0, this, );
+        _saveRequestResponse = false;
 
       } else {
         _id = _company['_id'].toString().split('\"')[1];
@@ -59,8 +61,10 @@ class CooprateBasicAouthVerifier extends AuthValidator {
       responseBody: _responseBody,
       status: _responseStatus
     );
-    await _responsesModel.save();
-
+    await _responsesModel.save();if(_saveRequestResponse){
+      await _responsesModel.save();
+      _cooperateRequest.normalRequest();
+    }
     return _authorization;
   }
 }
@@ -77,6 +81,7 @@ class BaseUserBasicAouthVerifier extends AuthValidator {
   @override
   FutureOr<Authorization> validate<T>(AuthorizationParser<T> parser, T authorizationData, {List<AuthScope> requiredScope}) async {
     Authorization _authorization;
+    bool _saveRequestResponse = true;
     final List<String> _aouthDetails = authorizationData.toString().split(":");
     final Map<String, dynamic> _accounts = await userModel.findBySelector(where.eq("email", _aouthDetails[0]));
     final BaseUserRequests _baseUserRequests = BaseUserRequests(
@@ -84,7 +89,6 @@ class BaseUserBasicAouthVerifier extends AuthValidator {
       baseUserRequestsType: BaseUserRequestsType.login,
       metadata: _aouthDetails
     );
-    _baseUserRequests.normalRequest();
     _requestId = _baseUserRequests.requestId();
 
     if(_accounts['status'] != 0){
@@ -103,6 +107,7 @@ class BaseUserBasicAouthVerifier extends AuthValidator {
       else if (userModel.verifyPassword(_aouthDetails[1], _account['password'].toString())) {
         final String _id = _account['_id'].toString().split('\"')[1];
         _authorization = Authorization(_id, 0, this, );
+        _saveRequestResponse = false;
       }
       else {
         _responseBody = {"status": 1, "body": "wrong Password"};
@@ -117,7 +122,10 @@ class BaseUserBasicAouthVerifier extends AuthValidator {
       responseBody: _responseBody,
       status: _responseStatus
     );
-    await _responsesModel.save();
+    if(_saveRequestResponse){
+      await _responsesModel.save();
+      _baseUserRequests.normalRequest();
+    }
 
     return _authorization;
   }
@@ -131,6 +139,7 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
   final ResposeType _responseType = ResposeType.account;
   ResponsesStatus _responseStatus;
   Map<String, dynamic> _responseBody;
+  bool _saveRequestResponse = true;
   @override
   FutureOr<Authorization> validate<T>(AuthorizationParser<T> parser, T authorizationData, {List<AuthScope> requiredScope}) async{
     Authorization _authorization;
@@ -154,7 +163,7 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
       accountRequestsType: AccountRequestsType.registerConsumer,
       metadata: _aouthDetails
     );
-    _accountRequest.normalRequest();
+    
     _requestId = _accountRequest.requestId();
     
     if(_dbRes['status'] != 0){
@@ -169,6 +178,7 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
         _authorization = null;
       }else{
         _authorization = Authorization(item['_id'].toString().split('\"')[1], 0, null);
+        _saveRequestResponse = false;
       }
     }
 
@@ -178,7 +188,10 @@ class AccountVerifyOtpAouthVerifier extends AuthValidator {
       responseBody: _responseBody,
       status: _responseStatus
     );
-    await _responsesModel.save();
+    if(_saveRequestResponse){
+      await _responsesModel.save();
+      _accountRequest.normalRequest();
+    }
     
     return _authorization;
   }
@@ -192,6 +205,7 @@ class AccountLoginAouthVerifier extends AuthValidator {
   final ResposeType _responseType = ResposeType.account;
   ResponsesStatus _responseStatus;
   Map<String, dynamic> _responseBody;
+  bool _saveRequestResponse = true;
   @override
   FutureOr<Authorization> validate<T>(AuthorizationParser<T> parser, T authorizationData, {List<AuthScope> requiredScope}) async {
     Authorization _authorization;
@@ -204,7 +218,7 @@ class AccountLoginAouthVerifier extends AuthValidator {
       accountRequestsType: AccountRequestsType.login,
       metadata: _aouthDetails
     );
-    _accountRequest.normalRequest();
+    
     _requestId = _accountRequest.requestId();
 
     if(_dbRes['status'] != 0){
@@ -220,9 +234,11 @@ class AccountLoginAouthVerifier extends AuthValidator {
       }else{
         if(_accountModel.verifyPassword(_aouthDetails[1], item['password'].toString())){
           _authorization = Authorization(item['_id'].toString().split('\"')[1], 0, null);
+          _saveRequestResponse = false;
         } else {
           _responseBody = {"status": 1, "body": "wrong credentials"};
           _responseStatus = ResponsesStatus.failed;
+          
         }
       }
     }
@@ -235,9 +251,10 @@ class AccountLoginAouthVerifier extends AuthValidator {
       responseBody: _responseBody,
       status: _responseStatus
     );
-    await _responsesModel.save();
-
-
+    if(_saveRequestResponse){
+      await _responsesModel.save();
+      _accountRequest.normalRequest();
+    }
 
     return _authorization;
   }
