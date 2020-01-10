@@ -21,6 +21,13 @@ Router accountsRoute(Router router){
     .route('/accounts/consumer/register')
     .link(()=> Authorizer.basic(AccountVerifyOtpAouthVerifier()))
     .link(()=> RegisterConsumerAccount());
+
+  router
+    .route('/accounts/merchant/register')
+    // .link(()=> Authorizer.basic(AccountVerifyOtpAouthVerifier())) will be users
+    .link(()=> RegisterMerchantAccount());
+
+  
     
   router
     .route('/accounts/verifyNumber')

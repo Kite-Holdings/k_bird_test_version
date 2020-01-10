@@ -13,4 +13,5 @@ const String tokensCollection = 'tokens';
 const String transactionsCollection = 'transactions';
 const String transactionResultCollection = 'transactionResult';
 const String walletsCollection = 'wallets';
+const String merchantWalletsCollection = 'merchantWallets';
 const String walletsActivitiesCollection = 'walletsActivities';

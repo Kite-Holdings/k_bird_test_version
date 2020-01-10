@@ -19,7 +19,7 @@ class AccountModel extends Model{
   final String password;
   final String username;
   final String cooprateCode;
-  ObjectId _id;
+  ObjectId id = ObjectId();
   String _hash;
 
   
@@ -27,9 +27,8 @@ class AccountModel extends Model{
   Map<String, dynamic> asMap(){
     // hash password
     
-    _id = ObjectId();
     return {
-      '_id': _id,
+      '_id': id,
       'accountType': _accountTypeToString(),
       'password': _hash,
       'phoneNo': phoneNo,
@@ -51,7 +50,7 @@ class AccountModel extends Model{
   Future<bool> createWallet()async{
     final WalletModel _walletModel = WalletModel(
       cooprateCode: cooprateCode,
-      ownerId: _id.toJson(),
+      ownerId: id.toJson(),
       walletNo: phoneNo.substring(4),
       walletType: accountType == AccountType.consumer ? WalletType.consumer : WalletType.merchant
     );
