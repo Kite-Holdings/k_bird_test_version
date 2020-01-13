@@ -1,3 +1,3 @@
-const String consumerKey = '6lOZ2NpZ2X';
-const String consumeSecret = 'h6eryO1Z4V6B';
-const String jarvisSmsUrl = 'http://127.0.0.1:2009/sms/send';
+const String consumerKey = '5EWsokOb03tv';
+const String consumeSecret = '5EWsokOb03tvm2hO9a';
+const String jarvisSmsUrl = 'http://18.189.117.13:2009/sms/send';
