@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:kite_bird/configs/jarvis/jarvis_sms_config.dart';
 import 'package:kite_bird/controllers/accounts/create_merchant_wallet.dart';
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/models/accounts/account_model.dart';
@@ -8,6 +11,7 @@ import 'package:kite_bird/requests_managers/account_request.dart';
 import 'package:kite_bird/serializers/accounts/account_serializer.dart';
 import 'package:kite_bird/serializers/accounts/merchant_account_serializer.dart';
 import 'package:kite_bird/utils/random_alphernumeric.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterConsumerAccount extends ResourceController{
   String _requestId;
@@ -124,15 +128,38 @@ class RegisterMerchantAccount extends ResourceController{
         await _accountModel.createWallet();
 
         // create merchant wallet
-        await createMerchantController(
+        final Map<String, dynamic> _creatMerchantRes = await createMerchantController(
           accountId: _accountModel.id.toJson(),
           companyName: merchantAccountSerializer.companyName,
         );
 
         _responseStatus = ResponsesStatus.success;
         _responseBody = {"body": "Account saved"};
+        if(_creatMerchantRes['success'] != true){
+          _responseStatus = ResponsesStatus.error;
+          _responseBody = {"body": "an error occured!"};
+        }{
+          // send merchant message with details
+          final String shortCode = _creatMerchantRes['shortCode'].toString();
+
+          final _base64E = base64Encode(utf8.encode('$consumerKey:$consumeSecret'));
+          final String basicAuth = 'Basic $_base64E';
+
+          final Map<String, dynamic> _smsPayload = {
+            'phoneNo': merchantAccountSerializer.phoneNo,
+            'message': "Account created under KITE HOLDINGS LIMITED.\ncompanyName:\t${merchantAccountSerializer.companyName}, \nshortCode:\t$shortCode, \nusername:\t${merchantAccountSerializer.username}, \npassword:\t$password, \nEnsure you change your password on first login."
+          };
+          try {
+            await http.post(jarvisSmsUrl, body: json.encode(_smsPayload), headers: <String, String>{'authorization': basicAuth, 'content-type': 'application/json'});
+          } catch (e) {
+            print(e);
+          }
+        }
       }
     }
+
+   
+
     
 
     // Save response
