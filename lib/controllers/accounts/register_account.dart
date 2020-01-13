@@ -141,7 +141,7 @@ class RegisterMerchantAccount extends ResourceController{
 
           jarvisSendSms(
             phoneNo: merchantAccountSerializer.phoneNo,
-            body: "Account created under KITE HOLDINGS LIMITED.\ncompanyName:\t${merchantAccountSerializer.companyName}, \nshortCode:\t$shortCode, \nusername:\t${merchantAccountSerializer.username}, \npassword:\t$password, \nEnsure you change your password on first login."
+            body: "Account created under KITE HOLDINGS LIMITED.\ncompanyName:\t${merchantAccountSerializer.companyName}, \nshortCode:\t$shortCode, \nusername:\t${merchantAccountSerializer.username}, \npassword:\t$password \nEnsure you change your password on first login."
           );
         }
       }
