@@ -1,6 +1,8 @@
+import 'package:kite_bird/models/accounts/account_model.dart';
 import 'package:kite_bird/models/model.dart';
 import 'package:kite_bird/models/transaction/transaction_model.dart' show TransactionType, transactionTypeToString, stringToTransactionType;
 import 'package:kite_bird/models/wallets/wallet_model.dart';
+import 'package:kite_bird/third_party_operations/jarvis/jarvis_sms.dart';
 
 export 'package:kite_bird/models/transaction/transaction_model.dart' show TransactionType;
 
@@ -37,6 +39,33 @@ class WalletOperations{
         );
         await _walletActivities.save();
         _successful = true;
+
+        // Send sms
+        final Map<String, dynamic> _walletRes = await _walletModel.findOneBy(
+          where.eq('walletNo', recipient),
+          fields: ['ownerId']
+        );
+        final AccountModel _accountModel = AccountModel();
+        Map<String, dynamic> _accountRes;
+        String _phoneNo;
+        try {
+          _accountRes = await _accountModel.findById(_walletRes['body']['ownerId'].toString(), fields: ['phoneNo']);
+        } catch (e) {
+          print(e);
+        }
+        if(_accountRes != null){
+          if(_accountRes['status'] == 0){
+            if(_accountRes['body'] != null){
+              _phoneNo = _accountRes['body']['phoneNo'].toString();
+              jarvisSendSms(
+                phoneNo: _phoneNo,
+                body: "You have received Ksh.$amount from ${transactipTypeToMessage(transactionType)} $sender."
+              );
+            }
+          }
+        }
+        
+
       } else{
         _successful = false;
       }
@@ -147,6 +176,22 @@ class WalletActivitiesModel extends Model{
   }
 
 
+}
+
+String transactipTypeToMessage(TransactionType __transactionType){
+  switch (__transactionType) {
+    case TransactionType.walletTowallet:
+      return 'Kite Holdings account';
+      break;
+    case TransactionType.mpesaCb:
+      return 'Mpesa account';
+      break;
+    case TransactionType.cardToWallet:
+      return 'Card';
+      break;
+    default:
+    return 'Account';
+  }
 }
 
 enum WalletOperationType{
