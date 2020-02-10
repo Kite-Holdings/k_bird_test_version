@@ -1,0 +1,1 @@
+export 'package:kite_bird/response/models/response_model.dart';

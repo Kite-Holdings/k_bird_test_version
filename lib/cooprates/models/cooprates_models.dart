@@ -1,0 +1,1 @@
+export 'package:kite_bird/cooprates/models/cooprate_model.dart';

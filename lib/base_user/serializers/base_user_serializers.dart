@@ -1,0 +1,1 @@
+export 'package:kite_bird/base_user/serializers/users_serializer.dart';

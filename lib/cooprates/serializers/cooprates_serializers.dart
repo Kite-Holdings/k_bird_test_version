@@ -1,0 +1,1 @@
+export 'package:kite_bird/cooprates/serializers/cooprate_serializer.dart';

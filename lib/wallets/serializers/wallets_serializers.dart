@@ -1,0 +1,1 @@
+export 'package:kite_bird/wallets/serializers/wallet_to_wallet_serializer.dart';
