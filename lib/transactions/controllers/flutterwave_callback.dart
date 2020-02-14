@@ -43,7 +43,7 @@ class FlutterWaveResponseController  extends ResourceController{
       sender: cardNo,
       transactionType: TransactionType.cardToWallet
     );
-    if(!await _walletOperations.deposit()){
+    if(!await _walletOperations.deposit() || walletNo == 'null'){
       _responseStatus = ResponsesStatus.error;
       _responseBody = {"body": "unable to deposit to wallet"};
       final ResponsesModel _responsesModel = ResponsesModel(

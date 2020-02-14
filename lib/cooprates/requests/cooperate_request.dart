@@ -19,6 +19,19 @@ class CooperateRequest{
       case CooperateRequestsType.create:
         _requestMethod = RequestMethod.postMethod;
         break;
+      case CooperateRequestsType.createSettings:
+        _requestMethod = RequestMethod.postMethod;
+        _url = '/cooperate/settings/...';
+        break;
+      case CooperateRequestsType.updateSettings:
+        _requestMethod = RequestMethod.putMethod;
+        _url = '/cooperate/settings/...';
+        break;
+      case CooperateRequestsType.transaction:
+        _requestMethod = RequestMethod.postMethod;
+        _url = '/cooperate/transaction/...';
+        break;
+      
       case CooperateRequestsType.delete:
         _requestMethod = RequestMethod.deleteMethod;
         _url = '/cooperate/:cooperateId';
@@ -60,6 +73,9 @@ class CooperateRequest{
 }
 enum CooperateRequestsType{
   create,
+  createSettings,
+  updateSettings,
+  transaction,
   getAll,
   getByid,
   getByName,

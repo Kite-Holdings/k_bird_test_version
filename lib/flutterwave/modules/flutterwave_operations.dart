@@ -15,7 +15,7 @@ class FlutterWaveCardDeposit{
     this.country = 'KE',
     this.amount,
     this.email,
-    this.walletNo,
+    // this.walletNo,
     this.callbackUrl,
     this.requestId,
   });
@@ -28,7 +28,7 @@ class FlutterWaveCardDeposit{
   final String country;
   final String amount;
   final String email;
-  final String walletNo;
+  // final String walletNo;
   final String callbackUrl;
   final String requestId;
 

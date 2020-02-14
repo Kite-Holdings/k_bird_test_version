@@ -1,0 +1,1 @@
+export 'package:kite_bird/cooprates/modules/cooprate_accounts_conf_module.dart';

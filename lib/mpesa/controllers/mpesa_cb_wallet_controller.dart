@@ -51,7 +51,6 @@ class MpesaCbRequestController extends ResourceController {
       // send stkpush
       final Map<String, dynamic> _mpesaRes =await _mpesaOperations.cb(
         amount: mpesaCbSerializer.amount,
-        callBackUrl: mpesaCbSerializer.callBackUrl,
         phoneNo: mpesaCbSerializer.phoneNo,
         walletNo: mpesaCbSerializer.walletNo,
         requestId: _requestId,

@@ -57,7 +57,7 @@ class FlutterWaveCardTransactionController extends ResourceController{
         email: flutterwaveCardSerializer.email,
         expiryMonth: flutterwaveCardSerializer.expiryMonth,
         expiryYear: flutterwaveCardSerializer.expiryYear,
-        walletNo: flutterwaveCardSerializer.walletNo,
+        // walletNo: flutterwaveCardSerializer.walletNo,
         requestId: _requestId
       );
       final Map<String, dynamic> _cardRes = await _flutterWaveCardDeposit.flutterWaveCardTransact();

@@ -11,7 +11,6 @@ class MpesaOperations{
     String requestId, 
     String phoneNo, 
     String amount, 
-    String callBackUrl,
     String walletNo,
     String transactionDesc,
   })async{
@@ -68,6 +67,63 @@ class MpesaOperations{
       }
     }
   }
+
+  Future<Map<String, dynamic>> bc({
+    String requestId, 
+    String phoneNo, 
+    String amount, 
+    String transactionDesc,
+  })async{
+
+    final Map<String, dynamic> _tokenRes = await fetchMpesaToken();
+    if(_tokenRes['status'] != 0){
+      return {
+        "status": 3,
+        "body": {
+          "message": "error fetching token"
+        }
+      };
+    } else {
+      final String accessToken = _tokenRes['body']['token'].toString();
+
+    final Map<String, dynamic> _payload = {
+      "InitiatorName": 'businessLabel',
+      "SecurityCredential": 'securityCredential',
+      "CommandID": "BusinessPayment",
+      // "SenderIdentifierType": "4",
+      // "RecieverIdentifierType": "1",
+      "Amount": amount,
+      "PartyA": 'businessShortCode',
+      "PartyB": phoneNo,
+      "Remarks": transactionDesc,
+      "QueueTimeOutURL": '$mpesaCallBackURL/bc/$requestId',
+      "ResultURL": 'mpesaTimeOutUR/bc/$requestId',
+      "AccountReference": requestId
+  };
+
+
+
+      final Map<String, String> _headers = {
+          'content-type': 'application/json',
+          'Authorization': 'Bearer $accessToken'
+      };
+
+      try{
+        final http.Response _res = await http.post(mpesaCbUrL, headers: _headers, body: json.encode(_payload));
+        return {
+          "status": 0,
+          "body": _res
+        };
+      } catch (e){
+        return {
+          "status": 3,
+          "body": "cannot reach endpoint"
+        };
+      }
+    }
+  }
+
+  
 
 
 }
