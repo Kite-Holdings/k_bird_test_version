@@ -29,22 +29,28 @@ class CooprateBasicAouthVerifier extends AuthValidator {
       _responseStatus = ResponsesStatus.error;
       _authorization = null;
     } else {
-      final _company = _companies['body'].first;
-      String _id;
-      if(_company == null) {
-        _responseBody =  {"message": "Wrong Consumer Key"};
-        _responseStatus = ResponsesStatus.failed;
-        _authorization = null;
+      try{
+        final _company = _companies['body'].first;
+        String _id;
+        if(_company == null) {
+          _responseBody =  {"message": "Wrong Consumer Key"};
+          _responseStatus = ResponsesStatus.failed;
+          _authorization = null;
+          }
+
+        if (_company['secretKey'].toString() == _aouthDetails[1].toString()) {
+          _id = _company['_id'].toString().split('\"')[1];
+          _authorization = Authorization(_id, 0, this, );
+          _saveRequestResponse = false;
+
+        } else {
+          _id = _company['_id'].toString().split('\"')[1];
+          _responseBody =  {"message": "Wrong Secret Key"};
+          _responseStatus = ResponsesStatus.failed;
+          _authorization = null;
         }
-
-      if (_company['secretKey'].toString() == _aouthDetails[1].toString()) {
-        _id = _company['_id'].toString().split('\"')[1];
-        _authorization = Authorization(_id, 0, this, );
-        _saveRequestResponse = false;
-
-      } else {
-        _id = _company['_id'].toString().split('\"')[1];
-        _responseBody =  {"message": "Wrong Secret Key"};
+      } catch (e){
+        _responseBody =  {"message": "Wrong Credentilas Key"};
         _responseStatus = ResponsesStatus.failed;
         _authorization = null;
       }
