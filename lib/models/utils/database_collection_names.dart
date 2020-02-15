@@ -11,6 +11,7 @@ const String cooprateCardCollection = 'cooprateCard';
 const String counterCollection = 'counter';
 const String flutterwaveResponsesCollection = 'flutterwaveResponses';
 const String mpesaResponsesCollection = 'mpesaResponses';
+const String bankResponsesCollection = 'bankResponses';
 const String registerPhoneverifivationCollection = 'registerPhoneverifivation';
 const String requestsCollection = 'requests';
 const String responsesCollection = 'responses';

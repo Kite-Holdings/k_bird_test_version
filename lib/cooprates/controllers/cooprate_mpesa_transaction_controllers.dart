@@ -2,8 +2,10 @@ import 'dart:convert';
 
 import 'package:kite_bird/cooprates/requests/cooprates_requests_manager.dart';
 import 'package:kite_bird/cooprates/serializers/cooprates_serializers.dart' show CooprateMpesaCbSerializer;
+import 'package:kite_bird/cooprates/utils/cooprates_utils.dart';
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/mpesa/modules/mpesa_modules.dart' show MpesaOperations;
+import 'package:kite_bird/mpesa/requests/mpesa_requests_manager.dart';
 import 'package:kite_bird/response/models/response_models.dart';
 
 class CooprateMpesaStkController extends ResourceController{
@@ -27,6 +29,23 @@ class CooprateMpesaStkController extends ResourceController{
     );
     _cooperateRequest.normalRequest();
     _requestId = _cooperateRequest.requestId();
+
+    final String cooprateCode = await getCooprateCodeById(request.authorization.clientID);
+
+    final MpesaRequest _mpesaRequest = MpesaRequest(
+      account: cooprateCode,
+      mpesaRequestsType: MpesaRequestsType.stkPush,
+      metadata: {
+        'phoneNo': cooprateMpesaCbSerializer.phoneNo,
+        'amount': cooprateMpesaCbSerializer.amount,
+        'callBackUrl': cooprateMpesaCbSerializer.callBackUrl,
+        'refNumber': cooprateMpesaCbSerializer.refNumber,
+        'transactionDesc': cooprateMpesaCbSerializer.transactionDesc,
+        'walletDeposit': false,
+      }
+    );
+    _mpesaRequest.normalRequest();
+    _requestId = _mpesaRequest.requestId();
 
 
       // final String cooprateCode = await getCooprateCodeById(request.authorization.clientID);

@@ -111,6 +111,16 @@ class ResponsesModel extends Model{
       case ResposeType.account:
         return 'account';
         break;
+      case ResposeType.bankIft:
+        return 'bankIft';
+        break;
+      case ResposeType.bankMpesa:
+        return 'bankMpesa';
+        break;
+      case ResposeType.bankPesalink:
+        return 'bankPesalink';
+        break;
+      
       case ResposeType.business:
         return 'business';
         break;
@@ -150,7 +160,17 @@ class ResponsesModel extends Model{
         break;
       case 'account':
         return ResposeType.account;
-        break;  
+        break; 
+      case 'bankIft':
+        return ResposeType.bankIft;
+        break; 
+      case 'bankMpesa':
+        return ResposeType.bankMpesa;
+        break; 
+      case 'bankPesalink':
+        return ResposeType.bankPesalink;
+        break; 
+      
       case 'business':
         return ResposeType.business;
         break;
@@ -189,6 +209,9 @@ class ResponsesStatusModel{
 
 enum ResposeType{
   account,
+  bankIft,
+  bankPesalink,
+  bankMpesa,
   business,
   callBack,
   cooperate,

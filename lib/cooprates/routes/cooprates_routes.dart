@@ -4,7 +4,8 @@ import 'package:kite_bird/cooprates/controllers/cooprates_controlers.dart' show
                 CooprateController,
                 CooprateFindByController,
                 CooprateBankController, CooprateCardController, CooprateMpesaController,
-                CooprateMpesaStkController, CooprateCardTransactionController;
+                CooprateMpesaStkController, CooprateCardTransactionController,
+                CooprateBankInternalFundsTransferSendController, CooprateBankMpesaController, CoopratePesaLinkSendController;
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/token/controllers/tokens_controller.dart' show CooprateTokenController;
 
@@ -50,9 +51,19 @@ Router cooprateRoute(Router router){
     .route("/$_rootPath/transaction/mpesa")
     .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
     .link(() => CooprateMpesaStkController());
+  router
+    .route("/$_rootPath/transaction/bank/ift")
+    .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
+    .link(() => CooprateBankInternalFundsTransferSendController());
+  router
+    .route("/$_rootPath/transaction/bank/mpesa")
+    .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
+    .link(() => CooprateBankMpesaController());
+  router
+    .route("/$_rootPath/transaction/bank/pesalink")
+    .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
+    .link(() => CoopratePesaLinkSendController());
   
-    
-
   
 
   return router;
