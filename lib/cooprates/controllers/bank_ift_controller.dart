@@ -42,6 +42,7 @@ class CooprateBankInternalFundsTransferSendController extends ResourceController
       requestId: _requestId,
     );
     final _response = await _ift.send;
+    print(_response);
 
     // compute response
       if(_response['status'] != 0){
