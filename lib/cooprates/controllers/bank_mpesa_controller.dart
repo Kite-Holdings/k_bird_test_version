@@ -51,13 +51,13 @@ class CooprateBankMpesaController extends ResourceController{
         _responseBody = {'body': 'An error occured!'};
       } else {
         dynamic _responseponseBody;
-        final int _responseponseStatusCode = int.parse(_response['body'].statusCode.toString());
+        final int _responseponseStatusCode = int.parse(_response['statusCode'].toString());
         
         try {
-          _responseponseBody = json.decode(_response['body'].body.toString());
+          _responseponseBody = json.decode(_response['body'].toString());
           _responseponseBody['requestId'] = _requestId;
         } catch (e) {
-          _responseponseBody = _response['body'].body; 
+          _responseponseBody = _response['body']; 
         }
         _responseBody = {'body': _responseponseBody};
 
