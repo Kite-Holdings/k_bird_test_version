@@ -76,12 +76,14 @@ class BankInternalFundsTransferModule{
       try {
         return {
           'status': 0,
-          'body': json.decode(r.body)
+          'body': json.decode(r.body),
+          'statusCode': r.statusCode
         };
       } catch (e) {
         return {
           'status': 0,
-          'body': r.body
+          'body': r.body,
+          'statusCode': r.statusCode
         };
       }
     } catch (e){

@@ -50,7 +50,7 @@ class CooprateBankInternalFundsTransferSendController extends ResourceController
         _responseBody = {'body': 'An error occured!'};
       } else {
         dynamic _responseponseBody;
-        final int _responseponseStatusCode = int.parse(_response['body'].statusCode.toString());
+        final int _responseponseStatusCode = int.parse(_response['statusCode'].toString());
         
         try {
           _responseponseBody = json.decode(_response['body'].body.toString());
