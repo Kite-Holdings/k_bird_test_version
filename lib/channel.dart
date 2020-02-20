@@ -27,6 +27,9 @@ class KiteBirdChannel extends ApplicationChannel {
       return response;
     });
 
+    // airtel router
+    airtelRouters(router);
+
     // base users router
     baseUserRoute(router);
 
@@ -39,6 +42,10 @@ class KiteBirdChannel extends ApplicationChannel {
 
     // Businesses
     businessRouter(router);
+
+
+    // Celulant
+    cellulantRoutes(router);
 
     // Transactions
     transactionsRoutes(router);
