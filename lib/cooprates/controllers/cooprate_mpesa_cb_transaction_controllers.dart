@@ -52,6 +52,7 @@ class CooprateMpesaStkController extends ResourceController{
 
       final MpesaOperations _mpesaOperations =  MpesaOperations();
       final Map<String, dynamic> _mpesaRes = await _mpesaOperations.cb(
+        cooprateCode: cooprateCode,
         requestId: _requestId,
         phoneNo: cooprateMpesaCbTransactionSerializer.phoneNo,
         amount: cooprateMpesaCbTransactionSerializer.amount,

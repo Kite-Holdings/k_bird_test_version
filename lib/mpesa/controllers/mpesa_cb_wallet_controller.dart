@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:kite_bird/accounts/models/accounts_models.dart';
+import 'package:kite_bird/cooprates/utils/cooprates_utils.dart';
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/mpesa/models/mpesa_models.dart' show StkProcessModel, ProcessState;
 import 'package:kite_bird/mpesa/modules/mpesa_modules.dart' show MpesaOperations;
@@ -48,8 +49,12 @@ class MpesaCbRequestController extends ResourceController {
       _responseBody = {"body": "Recipient Account does not exist"};
     } else{
 
+      // get cooprate code
+      final String cooprateCode = await getCooprateCodeByAccoutId(request.authorization.clientID);
+
       // send stkpush
       final Map<String, dynamic> _mpesaRes =await _mpesaOperations.cb(
+        cooprateCode: cooprateCode,
         amount: mpesaCbSerializer.amount,
         phoneNo: mpesaCbSerializer.phoneNo,
         walletNo: mpesaCbSerializer.walletNo,

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:kite_bird/cooprates/models/cooprates_models.dart' show CooprateMpesaBcModel;
+import 'package:kite_bird/cooprates/models/cooprates_models.dart' show CooprateMpesaBcModel, CooprateMpesaCbModel;
 import 'package:kite_bird/cooprates/modules/cooprates_modules.dart' show CooprateAccountConfModule;
 import 'package:kite_bird/mpesa/configs/mpesa_config.dart';
 import 'package:kite_bird/mpesa/modules/mpesa_modules.dart' show fetchMpesaToken;
@@ -10,14 +10,23 @@ import 'package:kite_bird/utils/stringify_int.dart';
 class MpesaOperations{
 
   Future<Map<String, dynamic>> cb({
+    String cooprateCode, 
     String requestId, 
     String phoneNo, 
     String amount, 
     String walletNo,
     String transactionDesc,
   })async{
+    // fetch configs
+    final CooprateAccountConfModule _accountConfModule = CooprateAccountConfModule(cooprateCode: cooprateCode);
+    final CooprateMpesaCbModel _conf = await _accountConfModule.mpesaCbConf();
 
-    final Map<String, dynamic> _tokenRes = await fetchMpesaToken();
+    final String _passKey = _conf.passKey;
+    final String _key = _conf.consumerKey;
+    final String _secret = _conf.consumerSecret;
+    final String _shortCode = _conf.shortCode;
+
+    final Map<String, dynamic> _tokenRes = await fetchMpesaToken(key: _key, secret: _secret);
     if(_tokenRes['status'] != 0){
       return {
         "status": 3,
@@ -30,18 +39,18 @@ class MpesaOperations{
 
       final DateTime _now = DateTime.now();
       final String _dt = _now.year.toString() + stringifyCount(_now.month, 2) + stringifyCount(_now.day, 2) + stringifyCount(_now.hour, 2) + stringifyCount(_now.minute, 2) + stringifyCount(_now.second, 2);
-      final String _codeKeyDt = mpesaBusinesShortCode + mpesaPassKey + _dt;
+      final String _codeKeyDt = _shortCode + _passKey + _dt;
       final List<int> _bytes = utf8.encode(_codeKeyDt);
       final String _password = base64.encode(_bytes);
 
       final Map<String, dynamic> _payload = {
-        "BusinessShortCode": mpesaBusinesShortCode,
+        "BusinessShortCode": _shortCode,
         "Password": _password,
         "Timestamp": _dt,
         "TransactionType": "CustomerPayBillOnline",
         "Amount": double.parse(amount),
         "PartyA": phoneNo,
-        "PartyB": mpesaBusinesShortCode,
+        "PartyB": _shortCode,
         "PhoneNumber": phoneNo,
         "CallBackURL": '$mpesaCallBackURL/cb/$requestId',
         "AccountReference": walletNo,

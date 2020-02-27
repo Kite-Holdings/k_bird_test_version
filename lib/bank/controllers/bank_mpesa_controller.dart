@@ -4,6 +4,7 @@ import 'package:aqueduct/aqueduct.dart';
 import 'package:kite_bird/bank/modules/bank_modules.dart' show BankMpesaModule;
 import 'package:kite_bird/bank/requests/bank_requests_manager.dart' show BankRequest, BankRequestsType;
 import 'package:kite_bird/bank/serializers/bank_serializers.dart';
+import 'package:kite_bird/cooprates/utils/cooprates_utils.dart'show getCooprateCodeByAccoutId;
 import 'package:kite_bird/response/models/response_models.dart';
 
 class BankMpesaController extends ResourceController{
@@ -23,9 +24,11 @@ class BankMpesaController extends ResourceController{
     );
     _bankRequest.normalRequest();
     _requestId = _bankRequest.requestId();
+    final String cooprateCode = await getCooprateCodeByAccoutId(request.authorization.clientID);
     
     
     final BankMpesaModule _coopMpesa = BankMpesaModule(
+      cooprateCode: cooprateCode,
       phoneNo: _bankMpesaSerializer.phoneNo,
       amount: _bankMpesaSerializer.amount,
       narration: _bankMpesaSerializer.narration,

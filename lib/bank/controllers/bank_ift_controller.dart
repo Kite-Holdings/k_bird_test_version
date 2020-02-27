@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:kite_bird/bank/modules/bank_modules.dart' show BankInternalFundsTransferModule;
 import 'package:kite_bird/bank/requests/bank_requests_manager.dart' show BankRequest, BankRequestsType;
 import 'package:kite_bird/bank/serializers/bank_serializers.dart' show BankInternalFundsTransferSerializer;
+import 'package:kite_bird/cooprates/utils/cooprates_utils.dart' show getCooprateCodeByAccoutId;
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/response/models/response_models.dart';
 
@@ -22,9 +23,12 @@ class BankInternalFundsTransferSendController extends ResourceController{
     );
     _bankRequest.normalRequest();
     _requestId = _bankRequest.requestId();
+
+    final String cooprateCode = await getCooprateCodeByAccoutId(request.authorization.clientID);
     
     final BankInternalFundsTransferModule _ift = BankInternalFundsTransferModule(
       accountNumber: _bankInternalFundsTransferSerializer.accountNumber,
+      cooprateCode: cooprateCode,
       amount: _bankInternalFundsTransferSerializer.amount,
       transactionCurrency: _bankInternalFundsTransferSerializer.transactionCurrency,
       narration: _bankInternalFundsTransferSerializer.narration,

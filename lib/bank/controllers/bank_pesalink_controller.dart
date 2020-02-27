@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:kite_bird/bank/modules/bank_modules.dart' show BankPesalinkModule;
 import 'package:kite_bird/bank/requests/bank_requests_manager.dart' show BankRequestsType, BankRequest;
 import 'package:kite_bird/bank/serializers/bank_serializers.dart' show BankPesalinkSerializer;
+import 'package:kite_bird/cooprates/utils/cooprates_utils.dart' show getCooprateCodeByAccoutId;
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/response/models/response_models.dart';
 
@@ -22,8 +23,11 @@ class PesaLinkSendController extends ResourceController{
     );
     _bankRequest.normalRequest();
     _requestId = _bankRequest.requestId();
+
+    final String cooprateCode = await getCooprateCodeByAccoutId(request.authorization.clientID);
     
     final BankPesalinkModule _pesalink = BankPesalinkModule(
+      cooprateCode: cooprateCode,
       accountNumber: _bankPesalinkSerializer.accountNumber,
       amount: _bankPesalinkSerializer.amount,
       transactionCurrency: _bankPesalinkSerializer.transactionCurrency,

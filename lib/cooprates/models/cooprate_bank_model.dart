@@ -31,6 +31,4 @@ class CooprateBankModel extends Model{
     consumerSecret: object['consumerSecret'].toString(),
   );
 
-
-
 }

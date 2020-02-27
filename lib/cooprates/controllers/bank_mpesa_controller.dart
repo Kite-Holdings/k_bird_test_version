@@ -5,7 +5,7 @@ import 'package:kite_bird/bank/modules/bank_modules.dart' show BankMpesaModule;
 import 'package:kite_bird/bank/requests/bank_requests_manager.dart' show BankRequest, BankRequestsType;
 import 'package:kite_bird/bank/serializers/bank_serializers.dart';
 import 'package:kite_bird/cooprates/requests/cooprates_requests_manager.dart';
-import 'package:kite_bird/cooprates/utils/cooprates_utils.dart';
+import 'package:kite_bird/cooprates/utils/cooprates_utils.dart' show getCooprateCodeById;
 import 'package:kite_bird/response/models/response_models.dart';
 
 class CooprateBankMpesaController extends ResourceController{
@@ -37,6 +37,7 @@ class CooprateBankMpesaController extends ResourceController{
     
     
     final BankMpesaModule _coopMpesa = BankMpesaModule(
+      cooprateCode: cooprateCode,
       phoneNo: _bankMpesaSerializer.phoneNo,
       amount: _bankMpesaSerializer.amount,
       narration: _bankMpesaSerializer.narration,
