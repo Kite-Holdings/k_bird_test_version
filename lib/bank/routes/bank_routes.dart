@@ -28,7 +28,7 @@ Router coopRoutes(Router router){
   router
     .route('/bank/balance')
     .linkFunction((request)async{
-      return Response.ok(await checkBalance());
+      return Response.ok(await checkBalance(cooprateCode: '001'));
     });
 
   return router;

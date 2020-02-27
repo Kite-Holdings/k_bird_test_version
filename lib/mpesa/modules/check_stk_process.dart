@@ -26,7 +26,7 @@ Future<void> checkStkProcessStatus() async {
       final checkoutRequestID = _body[i]['checkoutRequestID'].toString();
       final String _id = _body[i]['_id'].toString().split('"')[1];
       if(checkoutRequestID != 'null'){
-        final StkPushQueryRequest _stkPushQueryRequest = StkPushQueryRequest(checkoutRequestID: checkoutRequestID);
+        final StkPushQueryRequest _stkPushQueryRequest = StkPushQueryRequest(checkoutRequestID: checkoutRequestID, cooprateCode: _body[i]['cooprateCode'].toString());
 
         final Map<String, dynamic> _querRes = await _stkPushQueryRequest.process();
         // save response

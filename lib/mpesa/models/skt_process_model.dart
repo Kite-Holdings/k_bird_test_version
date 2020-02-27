@@ -3,6 +3,7 @@ export 'package:kite_bird/models/model.dart' show where, modify, ObjectId;
 
 class StkProcessModel extends Model{
   StkProcessModel({
+    this.cooprateCode,
     this.processId,
     this.processState,
     this.requestId,
@@ -12,6 +13,7 @@ class StkProcessModel extends Model{
     super.document = asMap();
   }
 
+  final String cooprateCode;
   final String processId;
   final ProcessState processState;
   final String requestId;
@@ -19,6 +21,7 @@ class StkProcessModel extends Model{
   DateTime timeInitiated;
 
   Map<String, dynamic> asMap()=> {
+      'cooprateCode': cooprateCode,
       'processState': processStateValue(),
       'requestId': requestId,
       'checkoutRequestID': checkoutRequestID,

@@ -4,6 +4,7 @@ import 'package:kite_bird/cooprates/requests/cooprates_requests_manager.dart';
 import 'package:kite_bird/cooprates/serializers/cooprates_serializers.dart' show CooprateMpesaCbTransactionSerializer;
 import 'package:kite_bird/cooprates/utils/cooprates_utils.dart';
 import 'package:kite_bird/kite_bird.dart';
+import 'package:kite_bird/mpesa/models/mpesa_models.dart' show StkProcessModel, ProcessState;
 import 'package:kite_bird/mpesa/modules/mpesa_modules.dart' show MpesaOperations;
 import 'package:kite_bird/mpesa/requests/mpesa_requests_manager.dart';
 import 'package:kite_bird/response/models/response_models.dart';
@@ -90,6 +91,16 @@ class CooprateMpesaStkController extends ResourceController{
           _responseStatus = ResponsesStatus.notDefined;
         }
       }
+
+    // Stkpush Process
+      final StkProcessModel _stkProcessModel = StkProcessModel(
+        requestId: _requestId, 
+        processState: ProcessState.pending, 
+        checkoutRequestID: _responseBody['body']['CheckoutRequestID'].toString(),
+        cooprateCode: cooprateCode,
+      );
+
+    await _stkProcessModel.save();
 
 
       // Save response

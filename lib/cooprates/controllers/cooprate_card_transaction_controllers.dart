@@ -53,6 +53,7 @@ class CooprateCardTransactionController extends ResourceController{
       
       final FlutterWaveCardDeposit _flutterWaveCardDeposit = FlutterWaveCardDeposit(
         amount: cooprateFlutterwaveCardSerializer.amount,
+        cooprateCode: cooprateCode,
         callbackUrl: cooprateFlutterwaveCardSerializer.callbackUrl,
         cardNo: cooprateFlutterwaveCardSerializer.cardNo,
         cvv: cooprateFlutterwaveCardSerializer.cvv,

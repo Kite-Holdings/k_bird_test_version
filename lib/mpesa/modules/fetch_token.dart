@@ -4,8 +4,8 @@ import 'package:http/http.dart' as http;
 import 'package:kite_bird/mpesa/configs/mpesa_config.dart';
 
 Future<Map<String, dynamic>> fetchMpesaToken({String key, String secret})async{
-  final String username = key == null ? mpesaConsumerKey : key;
-  final String password = secret == null ? mpesaConsumerSecret: secret;
+  final String username = key;
+  final String password =  secret;
   final _base64E = base64Encode(utf8.encode('$username:$password'));
   final String basicAuth = 'Basic $_base64E';
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:kite_bird/accounts/models/accounts_models.dart';
+import 'package:kite_bird/cooprates/utils/cooprates_utils.dart' show getCooprateCodeByAccoutId;
 import 'package:kite_bird/flutterwave/modules/flutterwave_modules.dart' show FlutterWaveCardDeposit;
 import 'package:kite_bird/flutterwave/requests/flutterwave_requests_manager.dart';
 import 'package:kite_bird/flutterwave/serializers/flutterwave_serializers.dart' show FlutterwaveCardSerializer;
@@ -48,8 +49,14 @@ class FlutterWaveCardTransactionController extends ResourceController{
       _responseStatus = ResponsesStatus.failed;
       _responseBody = {"body": "Recipient Account does not exist"};
     } else{
+
+      // get cooprate code
+      final String cooprateCode = await getCooprateCodeByAccoutId(request.authorization.clientID);
+
+
       // transact
       final FlutterWaveCardDeposit _flutterWaveCardDeposit = FlutterWaveCardDeposit(
+        cooprateCode: cooprateCode,
         amount: flutterwaveCardSerializer.amount,
         callbackUrl: flutterwaveCardSerializer.callbackUrl,
         cardNo: flutterwaveCardSerializer.cardNo,

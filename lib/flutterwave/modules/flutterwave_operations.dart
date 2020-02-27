@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:kite_bird/cooprates/models/cooprates_models.dart' show CooprateCardModel;
+import 'package:kite_bird/cooprates/modules/cooprates_modules.dart' show CooprateAccountConfModule;
 import 'package:kite_bird/flutterwave/configs/flutterwave_config.dart';
 import 'package:kite_bird/flutterwave/utils/flutterwave_utils.dart';
 
@@ -16,6 +18,7 @@ class FlutterWaveCardDeposit{
     this.amount,
     this.email,
     // this.walletNo,
+    this.cooprateCode,
     this.callbackUrl,
     this.requestId,
   });
@@ -29,19 +32,25 @@ class FlutterWaveCardDeposit{
   final String amount;
   final String email;
   // final String walletNo;
+  final String cooprateCode;
   final String callbackUrl;
   final String requestId;
 
-  final String _publicKey = flutterWavePubKey;
-  final String _secretKey = flutterWaveSecurityKey;
   String txRef;
   String redirectUrl = flutterWaveCardredirect;
 
   Future<Map<String, dynamic>> flutterWaveCardTransact() async{
 
+    // fetch configs
+    final CooprateAccountConfModule _accountConfModule = CooprateAccountConfModule(cooprateCode: cooprateCode);
+    final CooprateCardModel _conf = await _accountConfModule.cardConf();
+
+    final String _key = _conf.consumerKey;
+    final String _secret = _conf.consumerSecret;
+
     txRef = requestId;
     final Map<String, dynamic> _data = {
-      "PBFPubKey": _publicKey,
+      "PBFPubKey": _key,
       "cardno": cardNo,
       "cvv": cvv,
       "expirymonth": expiryMonth,
@@ -54,10 +63,10 @@ class FlutterWaveCardDeposit{
       "redirect_url": redirectUrl,
     };
 
-    final String _hashedSecKey = getKey(_secretKey);
+    final String _hashedSecKey = getKey(_secret);
     final String encrypt3DESKey = encryptData(_hashedSecKey, json.encode(_data));
     final Map<String, dynamic> _payload = {
-        "PBFPubKey": _publicKey,
+        "PBFPubKey": _key,
         "client": encrypt3DESKey,
         "alg": "3DES-24"
     };
