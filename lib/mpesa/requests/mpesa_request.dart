@@ -15,10 +15,15 @@ class MpesaRequest{
 
   void normalRequest()async{
     switch (mpesaRequestsType) {
+      case MpesaRequestsType.bc:
+        _requestMethod = RequestMethod.postMethod;
+        _url = '/transactions/mpesa/bc';
+        break;
       case MpesaRequestsType.stkPush:
         _requestMethod = RequestMethod.postMethod;
         _url = '/transactions/mpesa/cb';
         break;
+      
       case MpesaRequestsType.stkQuery:
         _requestMethod = RequestMethod.postMethod;
         _url = '/transactions/mpesa/stkQuery';
@@ -42,5 +47,6 @@ class MpesaRequest{
 
 enum MpesaRequestsType{
   stkPush,
-  stkQuery
+  stkQuery,
+  bc
 }

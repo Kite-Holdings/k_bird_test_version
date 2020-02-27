@@ -1,5 +1,5 @@
 import 'package:kite_bird/cooprates/models/cooprates_models.dart' show
-        CooprateMpesaModel, where,
+        CooprateMpesaCbModel, CooprateMpesaBcModel, where,
         CooprateBankModel,
         CooprateCardModel;
 
@@ -9,15 +9,29 @@ class CooprateAccountConfModule{
   final String cooprateCode;
 
 
-  Future<CooprateMpesaModel> mpesaConf()async{
-    final CooprateMpesaModel _cooprateMpesaModel = CooprateMpesaModel();
+  Future<CooprateMpesaCbModel> mpesaCbConf()async{
+    final CooprateMpesaCbModel _cooprateMpesaModel = CooprateMpesaCbModel();
     final Map<String, dynamic> _dbRes = await _cooprateMpesaModel.findOneBy(where.eq('cooprateCode', cooprateCode));
     if(_dbRes['status'] == 0){
       return _cooprateMpesaModel.fromMap(_dbRes['body']);
     } else {
-      return CooprateMpesaModel();
+      return CooprateMpesaCbModel();
     }
   }
+  Future<CooprateMpesaBcModel> mpesaBcConf()async{
+    final CooprateMpesaBcModel _cooprateMpesaModel = CooprateMpesaBcModel();
+    final Map<String, dynamic> _dbRes = await _cooprateMpesaModel.findOneBy(where.eq('cooprateCode', cooprateCode));
+    if(_dbRes['status'] == 0){
+      try{
+        return _cooprateMpesaModel.fromMap(_dbRes['body']);
+      } catch (e){
+        return CooprateMpesaBcModel();
+      }
+    } else {
+      return CooprateMpesaBcModel();
+    }
+  }
+  
   
   Future<CooprateBankModel> bankConf()async{
     final CooprateBankModel _cooprateBankModel = CooprateBankModel();

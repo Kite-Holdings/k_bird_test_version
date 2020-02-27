@@ -1,9 +1,11 @@
 export 'package:kite_bird/cooprates/controllers/cooprate_find_controller.dart';
 export 'package:kite_bird/cooprates/controllers/cooprate_controller.dart';
-export 'package:kite_bird/cooprates/controllers/cooprate_mpesa_conf_controllers.dart';
+export 'package:kite_bird/cooprates/controllers/cooprate_mpesa_bc_conf_controllers.dart';
+export 'package:kite_bird/cooprates/controllers/cooprate_mpesa_cb_conf_controllers.dart';
 export 'package:kite_bird/cooprates/controllers/cooprate_bank_conf_controllers.dart';
 export 'package:kite_bird/cooprates/controllers/cooprate_card_conf_controllers.dart';
-export 'package:kite_bird/cooprates/controllers/cooprate_mpesa_transaction_controllers.dart';
+export 'package:kite_bird/cooprates/controllers/cooprate_mpesa_cb_transaction_controllers.dart';
+export 'package:kite_bird/cooprates/controllers/cooprate_mpesa_bc_transaction_controllers.dart';
 export 'package:kite_bird/cooprates/controllers/cooprate_card_transaction_controllers.dart';
 export 'package:kite_bird/cooprates/controllers/bank_ift_controller.dart';
 export 'package:kite_bird/cooprates/controllers/bank_mpesa_controller.dart';

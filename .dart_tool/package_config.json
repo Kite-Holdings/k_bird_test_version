@@ -224,6 +224,12 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "password",
+      "rootUri": "file:///home/genius/.pub-cache/hosted/pub.dartlang.org/password-1.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "password_hash",
       "rootUri": "file:///home/genius/.pub-cache/hosted/pub.dartlang.org/password_hash-2.0.0",
       "packageUri": "lib/",
@@ -240,6 +246,12 @@
       "rootUri": "file:///home/genius/.pub-cache/hosted/pub.dartlang.org/pedantic-1.8.0+1",
       "packageUri": "lib/",
       "languageVersion": "2.1"
+    },
+    {
+      "name": "pointycastle",
+      "rootUri": "file:///home/genius/.pub-cache/hosted/pub.dartlang.org/pointycastle-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "0.8"
     },
     {
       "name": "pool",
@@ -264,6 +276,12 @@
       "rootUri": "file:///home/genius/.pub-cache/hosted/pub.dartlang.org/pub_semver-1.4.2",
       "packageUri": "lib/",
       "languageVersion": "1.0"
+    },
+    {
+      "name": "random_string",
+      "rootUri": "file:///home/genius/.pub-cache/hosted/pub.dartlang.org/random_string-1.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
     },
     {
       "name": "safe_config",
@@ -356,6 +374,12 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "tripledes",
+      "rootUri": "file:///home/genius/.pub-cache/hosted/pub.dartlang.org/tripledes-2.1.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
       "name": "typed_data",
       "rootUri": "file:///home/genius/.pub-cache/hosted/pub.dartlang.org/typed_data-1.1.6",
       "packageUri": "lib/",
@@ -395,10 +419,10 @@
       "name": "kite_bird",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.0"
+      "languageVersion": "2.1"
     }
   ],
-  "generated": "2019-11-30T23:15:10.626411Z",
+  "generated": "2020-02-27T02:09:42.865910Z",
   "generator": "pub",
-  "generatorVersion": "2.7.0"
+  "generatorVersion": "2.7.1"
 }

@@ -14,3 +14,5 @@ const String mpesaCbUrL = 'https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/proc
 const String mpesaStkPushQueryRequestUrl = 'https://sandbox.safaricom.co.ke/mpesa/stkpushquery/v1/query';
 
 const String mpesaTokenUrl = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials';
+
+const String mpesaBcUrL = 'https://api.safaricom.co.ke/mpesa/b2c/v1/paymentrequest';

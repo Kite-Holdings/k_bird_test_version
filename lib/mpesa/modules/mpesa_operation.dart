@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:kite_bird/cooprates/models/cooprates_models.dart' show CooprateMpesaBcModel;
+import 'package:kite_bird/cooprates/modules/cooprates_modules.dart' show CooprateAccountConfModule;
 import 'package:kite_bird/mpesa/configs/mpesa_config.dart';
 import 'package:kite_bird/mpesa/modules/mpesa_modules.dart' show fetchMpesaToken;
 import 'package:kite_bird/utils/stringify_int.dart';
@@ -69,13 +71,22 @@ class MpesaOperations{
   }
 
   Future<Map<String, dynamic>> bc({
+    String cooprateCode, 
     String requestId, 
     String phoneNo, 
     String amount, 
     String transactionDesc,
   })async{
+    final CooprateAccountConfModule _accountConfModule = CooprateAccountConfModule(cooprateCode: cooprateCode);
+    final CooprateMpesaBcModel _conf = await _accountConfModule.mpesaBcConf();
 
-    final Map<String, dynamic> _tokenRes = await fetchMpesaToken();
+    final String initiatorName = _conf.initiatorName;
+    final String securityCredential = _conf.securityCredential;
+    final String _key = _conf.consumerKey;
+    final String _secret = _conf.consumerSecret;
+    final String _shortCode = _conf.shortCode;
+
+    final Map<String, dynamic> _tokenRes = await fetchMpesaToken(key: _key, secret: _secret);
     if(_tokenRes['status'] != 0){
       return {
         "status": 3,
@@ -87,17 +98,15 @@ class MpesaOperations{
       final String accessToken = _tokenRes['body']['token'].toString();
 
     final Map<String, dynamic> _payload = {
-      "InitiatorName": 'businessLabel',
-      "SecurityCredential": 'securityCredential',
+      "InitiatorName": initiatorName,
+      "SecurityCredential": securityCredential,
       "CommandID": "BusinessPayment",
-      // "SenderIdentifierType": "4",
-      // "RecieverIdentifierType": "1",
       "Amount": amount,
-      "PartyA": 'businessShortCode',
+      "PartyA": _shortCode,
       "PartyB": phoneNo,
       "Remarks": transactionDesc,
       "QueueTimeOutURL": '$mpesaCallBackURL/bc/$requestId',
-      "ResultURL": 'mpesaTimeOutUR/bc/$requestId',
+      "ResultURL": '$mpesaCallBackURL/bc/$requestId',
       "AccountReference": requestId
   };
 
@@ -109,7 +118,7 @@ class MpesaOperations{
       };
 
       try{
-        final http.Response _res = await http.post(mpesaCbUrL, headers: _headers, body: json.encode(_payload));
+        final http.Response _res = await http.post(mpesaBcUrL, headers: _headers, body: json.encode(_payload));
         return {
           "status": 0,
           "body": _res

@@ -3,8 +3,8 @@ import 'package:kite_bird/cooprates/auth/cooprates_auth.dart';
 import 'package:kite_bird/cooprates/controllers/cooprates_controlers.dart' show 
                 CooprateController,
                 CooprateFindByController,
-                CooprateBankController, CooprateCardController, CooprateMpesaController,
-                CooprateMpesaStkController, CooprateCardTransactionController,
+                CooprateBankController, CooprateCardController, CooprateMpesaBcController, CooprateMpesaCbController,
+                CooprateMpesaStkController, CooprateCardTransactionController, CooprateMpesaBcTransactionController,
                 CooprateBankInternalFundsTransferSendController, CooprateBankMpesaController, CoopratePesaLinkSendController;
 import 'package:kite_bird/kite_bird.dart';
 import 'package:kite_bird/token/controllers/tokens_controller.dart' show CooprateTokenController;
@@ -40,17 +40,26 @@ Router cooprateRoute(Router router){
     .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
     .link(() => CooprateCardController());
   router
-    .route("/$_rootPath/settings/mpesa")
+    .route("/$_rootPath/settings/mpesa/cb")
     .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
-    .link(() => CooprateMpesaController());
+    .link(() => CooprateMpesaCbController());
+  router
+    .route("/$_rootPath/settings/mpesa/bc")
+    .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
+    .link(() => CooprateMpesaBcController());
   router
     .route("/$_rootPath/transaction/card")
     .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
     .link(() => CooprateCardTransactionController());
   router
-    .route("/$_rootPath/transaction/mpesa")
+    .route("/$_rootPath/transaction/mpesa/cb")
     .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
     .link(() => CooprateMpesaStkController());
+  router
+    .route("/$_rootPath/transaction/mpesa/bc")
+    .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
+    .link(() => CooprateMpesaBcTransactionController());
+  
   router
     .route("/$_rootPath/transaction/bank/ift")
     .link(() => Authorizer.basic(CooprateBasicAouthVerifier()))
