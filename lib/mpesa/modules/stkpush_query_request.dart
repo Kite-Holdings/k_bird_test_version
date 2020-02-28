@@ -24,7 +24,6 @@ class StkPushQueryRequest{
     final CooprateAccountConfModule _accountConfModule = CooprateAccountConfModule(cooprateCode: cooprateCode);
     final CooprateMpesaCbModel _conf = await _accountConfModule.mpesaCbConf();
 
-    final String _passKey = _conf.passKey;
     final String _key = _conf.consumerKey;
     final String _secret = _conf.consumerSecret;
     final String _shortCode = _conf.shortCode;
